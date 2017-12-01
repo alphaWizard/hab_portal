@@ -26,6 +26,8 @@ class HostelRoomOccupantRelationForm(forms.ModelForm):
         fromRoomStay = forms.DateField(widget = forms.DateTimeInput())
 
 class OccupantDetailsForm(forms.ModelForm):
+    photo = forms.ImageField(label='Choose Image' , required=False)
+    idPhoto = forms.ImageField(label='Choose Image' , required=False)
     class Meta():
         model = OccupantDetails
         exclude = ('idNo',)

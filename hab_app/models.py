@@ -1,7 +1,6 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 
-
 HOSTEL_CHOICES = (
         ('Barak', 'Barak'),
         ('Bramhaputra', 'Bramhaputra'),
@@ -55,11 +54,11 @@ ROOM_STATUS_CHOICES =(
     ('Partially Damaged','Partially Damaged'),
 )
 FLOOR_CHOICES =(
-    ('Ground','Ground'),
-    ('First','First'),
-    ('Second','Second'),
-    ('Third','Third'),
-    ('Fourth','Fourth'),
+    ('Ground Floor','Ground Floor'),
+    ('First Floor','First Floor'),
+    ('Second Floor','Second Floor'),
+    ('Third Floor','Third Floor'),
+    ('Fourth Floor','Fourth Floor'),
 )
 ABILITY_CHOICES =(
     ('Specially/Differently Abled','Specially/Differently Abled'),
@@ -102,7 +101,7 @@ class RoomCategory(models.Model):
     #description such as single occupancy/double occupancy/attached toilets etc
     description = models.CharField(max_length=255,null=False)
     def __str__(self):
-        return self.description
+        return str(self.description)
 #table with different occupant categories and its abbrevations used
 
 class OccupantCategory(models.Model):
@@ -128,11 +127,11 @@ class HostelRoom(models.Model):
     floorInfo = models.CharField(max_length=255,choices = FLOOR_CHOICES)
     #status as abandoned/partially damaged etc
     roomStatus = models.CharField(max_length=255,choices=ROOM_STATUS_CHOICES)
-    roomOccupancyGender = models.CharField(max_length=255,choices=GENDER_CHOICES)
-    comments = models.CharField(max_length=255)
+    roomOccupancyGender = models.CharField(max_length=255,choices=GENDER_CHOICES,blank=True,null=True)
+    comments = models.CharField(max_length=255,blank=True,null=True)
 
     def __str__(self):
-        return self.roomNo
+        return str(self.roomNo)
 
 #table with information regarding occupants staying in hostel.one for each hostel
 
@@ -172,7 +171,11 @@ class HostelViewAccess(models.Model):
 #table with all information of a particular OccupantDetails
 
 class OccupantDetails(models.Model):
-
+    def validate_image(fieldfile_obj):
+        filesize = fieldfile_obj.file.size
+        megabyte_limit = 5.0
+        if filesize > megabyte_limit*1024*1024:
+            raise ValidationError("Max file size is %sMB" % str(megabyte_limit))
     class Meta:
         verbose_name = "OccupantDetails"
         verbose_name_plural = "OccupantDetails"
@@ -188,8 +191,8 @@ class OccupantDetails(models.Model):
     altEmail = models.CharField(max_length=255)
     mobNo = models.CharField(max_length=255)
     emgercencyNo = models.CharField(max_length=255)
-    photo = models.ImageField(upload_to='profile_pics',blank=True)
-    idPhoto = models.ImageField(upload_to='id_pics',blank=True)
+    photo = models.ImageField(upload_to='profile_pics',blank=True,validators=[validate_image])
+    idPhoto = models.ImageField(upload_to='id_pics',blank=True,validators=[validate_image])
     Address=models.CharField(max_length=300)
     Pincode=models.PositiveIntegerField( validators=[MaxValueValidator(999999)])
     bankName = models.CharField(max_length=255)
@@ -206,6 +209,11 @@ class OccupantDetails(models.Model):
 #hostelRORelation inherits HostelRoomOccupantRelation
 
 class UpcomingOccupantRequest(models.Model):
+    def validate_image(fieldfile_obj):
+        filesize = fieldfile_obj.file.size
+        megabyte_limit = 5.0
+        if filesize > megabyte_limit*1024*1024:
+            raise ValidationError("Max file size is %sMB" % str(megabyte_limit))
     # hostelName = models.CharField(max_length=255,choices = HOSTEL_CHOICES)
     guestname=models.CharField(max_length=255,null = False)
     hostelName = models.CharField(max_length = 255)

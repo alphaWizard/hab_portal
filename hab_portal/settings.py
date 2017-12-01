@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'hab_app',
     'django_mailbox',
+    'import_export'
 ]
 
 MIDDLEWARE = [
@@ -63,7 +64,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'hab_portal.urls'
-
+IMPORT_EXPORT_USE_TRANSACTIONS = True
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -89,8 +90,12 @@ WSGI_APPLICATION = 'hab_portal.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'hab_portal',
+        'USER': 'rajas',
+        'PASSWORD': 'rajasB6*3',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 

@@ -24,7 +24,7 @@
           <td>{{i.contact}}</td>
           <td>{{ i.messStatus }}</td>
           <td><a href="{% url 'hab_app:showDetails' %}?param={{ i.occupantId }}" >Details</a></td>
-          <td><a href="#" onclick="deleteDetails(this)" id = "{{ i.occupantId }}" >
+          <td><a href="{% url 'hab_app:deleteDetails' %}?param={{ i.occupantId }}" onclick="return confirm('Are you sure you want vacate?');">
           <span class="glyphicon glyphicon-trash"></span>
         </a></td>
       </tr>
@@ -32,27 +32,27 @@
   </tbody>
   <script>
 
-      function deleteDetails($this){
-
-        var result = confirm("Are you sure you want to delete?");
-        if(result){
-          var det = $this.id;
-          $($this).closest('tr').remove().draw();
-          $.ajax({
-          url: "{% url 'hab_app:deleteDetails' %}",
-          data: {
-            pm : det
-          },
-          type : "GET",
-          success: function (data) {
-            $($this).closest('tr').remove();
-
-          }
-        });
-
-        }
-
-      }
+      // function deleteDetails($this){
+      //
+      //   var result = confirm("Are you sure you want to delete?");
+      //   if(result){
+      //     var det = $this.id;
+      //     $($this).closest('tr').remove().draw();
+      //     $.ajax({
+      //     url: "{% url 'hab_app:deleteDetails' %}",
+      //     data: {
+      //       pm : det
+      //     },
+      //     type : "GET",
+      //     success: function (data) {
+      //       $($this).closest('tr').remove();
+      //
+      //     }
+      //   });
+      //
+      //   }
+      //
+      // }
       </script>
 
 {% endblock %}

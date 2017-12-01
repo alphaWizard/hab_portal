@@ -12,6 +12,7 @@ urlpatterns = [
     url(r'^chrApproveApplication/$', views.chrApproveApplication,name='chrApproveApplication'),
     url(r'^chrDisapproveApplication/$', views.chrDisapproveApplication,name='chrDisapproveApplication'),
     url(r'^showDetails/$', views.showDetails,name='showDetails'),
+    url(r'^showDetails2/$', views.showDetails2,name='showDetails2'),
     url(r'^addDetails/$', views.addDetails,name='addDetails'),
     url(r'^chrAllot/$', views.chrAllot,name='chrAllot'),
     url(r'^approveApplication/$', views.approveApplication,name='approveApplication'),
@@ -21,4 +22,5 @@ urlpatterns = [
     url(r'^deleteDetails/$', views.deleteDetails,name='deleteDetails'),
     url(r'^existingOccupants/$', views.existingOccupants,name='existingOccupants'),
     url(r'^roomDetails/$', views.roomDetails,name='roomDetails'),
+    url(r'^chrViewRoom/$', views.chrViewRoom,name='chrViewRoom'),
 ]

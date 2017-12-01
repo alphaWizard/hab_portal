@@ -7,12 +7,7 @@
   <title>HAB</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  {# datetime#}
-<link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/themes/redmond/jquery-ui.css" rel="Stylesheet" />
-<script language="javascript" type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/jquery-ui.min.js"></script>
   <!-- Bootstrap 3.3.7 -->
-
   <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.min.css' %}">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="{% static 'bower_components/font-awesome/css/font-awesome.min.css' %}">
@@ -27,12 +22,11 @@
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="{% static 'dist/css/skins/_all-skins.min.css' %}">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
+{# datetime#}
   <link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/themes/redmond/jquery-ui.css" rel="Stylesheet" />
 
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/jquery-ui.min.js"></script>
-  {# datetime#}
-
+{# datetime#}
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 
@@ -43,6 +37,7 @@
   <!-- Google Font -->
   <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
   {# <div id="main_header"><img class="margin" src='images/mainLogo.png'><h1>Indian Institute of Technology Guwahati</h1></div>#}
@@ -106,11 +101,10 @@
   </aside>
 
 
-
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <h1>welcome caretaker of {{ROtable.hostelName}}</h1>
+
 
 
     <!-- Main content -->
@@ -120,19 +114,110 @@
 
           <!-- /.box -->
 
-          <div class="box">
-            <div class="box-header">
 
-            </div>
+
             <!-- /.box-header -->
-            <div class="box-body">
-              <table id="example1" class="table table-bordered table-striped">
-                {% block body_block %}
-                {% endblock %}
-              </table>
-            </div>
-            <!-- /.box-body -->
+
+
+            <div class="col-md-6">
+              <div class="box box-solid box-info">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Occupant Details</h3>
+                </div>
+            <table class="table table-striped" >
+              <thead>
+
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Name:</strong></td><td>{{details.name}}</td>
+                </tr>
+                <tr>
+                  <td><strong>Id type:</strong></td><td>{{details.idType}}</td>
+                </tr>
+                <tr>
+                  <td><strong>Id No:</strong></td><td>{{details.idNo}}</td>
+                </tr>
+                <tr>
+                  <td><strong>Gender:</strong></td><td>{{details.gender}}</td>
+                </tr>
+                <tr>
+                  <td><strong>SA/DA:</strong></td><td>{{details.saORda}}</td>
+                </tr>
+                <tr>
+                  <td><strong>Webmail:</strong></td><td>{{details.webmail}}</td>
+                </tr>
+                <tr>
+                  <td><strong>Alternate Email:</strong></td><td>{{details.altEmail}}</td>
+                </tr>
+                <tr>
+                  <td><strong>Mobile No:</strong></td><td>{{details.mobNo}}</td>
+                </tr>
+                <tr>
+                  <td><strong>Emergency No:</strong></td><td>{{details.emgercencyNo}}</td>
+                </tr>
+                <tr>
+                  <td><strong>Bank Account No:</strong></td><td>{{details.bankAccount}}</td>
+                </tr>
+                <tr>
+                  <td><strong>IFSC code:</strong></td><td>{{details.IFSCCode}}</td>
+                </tr>
+                <tr>
+                  <td><strong>Account Holder Name:</strong></td><td>{{details.accHolderName}}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
+          </div>
+          <div class="col-md-6">
+            <div class="box box-solid box-info">
+              <div class="box-header with-border">
+                <h3 class="box-title">Room Occupant Details</h3>
+              </div>
+                <table class = "table table-striped" >
+                  <thead>
+
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Hostel Name:</strong></td><td>{{roDetails.hostelName}}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Room No:</strong></td><td>{{roDetails.roomNo}}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Mess Status:</strong></td><td>{{roDetails.messStatus}}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>To Mess Date:</strong></td><td>{{roDetails.toMess}}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>From Mess Date:</strong></td><td>{{roDetails.fromMess}}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>To Room Stay:</strong></td><td>{{roDetails.toRoomStay}}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>From Room Stay:</strong></td><td>{{roDetails.fromRoomStay}}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Comments:</strong></td><td>{{roDetails.comments}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+          </div>
+            </div>
+
+
+
+          <div class="col-lg-9 col-md-9">
+            <a class="btn btn-primary" href="{% url 'hab_app:vacate' %}" role="button">Back</a>
+          </div>
+
+
+            <!-- /.box-body -->
+
           <!-- /.box -->
         </div>
         <!-- /.col -->
@@ -172,10 +257,11 @@
 
 <script type="text/javascript">
   $(function(){
-    $("#id_toStay").datepicker({ dateFormat: 'yy-mm-dd' });
-    $("#id_fromStay").datepicker({ dateFormat: 'yy-mm-dd' });
+    $("#id_toRoomStay").datepicker({ dateFormat: 'yy-mm-dd' });
+    $("#id_fromRoomStay").datepicker({ dateFormat: 'yy-mm-dd' });
   });
 </script>
+
 <script>
   $(function () {
     $('#example1').DataTable()
@@ -185,9 +271,13 @@
       'searching'   : true,
       'ordering'    : true,
       'info'        : true,
-      'autoWidth'   : false
+      'autoWidth'   : false,
     })
   })
 </script>
+
+
+
+
 </body>
 </html>

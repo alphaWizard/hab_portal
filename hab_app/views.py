@@ -7,22 +7,35 @@ from hab_app.models import *
 from datetime import *
 from django.apps import apps
 from hab_app.forms import *
+from django.contrib.auth.decorators import login_required
 # Create your views here
 
 def index(request):
     return render(request,'hab_app/login.html')
 
-
 def showDetails(request):
-    ROtable = AllHostelMetaData.objects.get(hostelName__iexact = hostel)
+    ROtable = AllHostelMetaData.objects.get(hostelName__iexact = request.session['username'][:-3])
     if request.method == 'GET':
         parameter = request.GET.get('param')
         details = OccupantDetails.objects.get(idNo = parameter)
-        ROtable = AllHostelMetaData.objects.get(hostelName__iexact = hostel)
+        ROtable = AllHostelMetaData.objects.get(hostelName__iexact = request.session['username'][:-3])
         temp = ROtable.hostelRoomOccupant
         mymodel = apps.get_model(app_label='hab_app', model_name=temp)
         roDetails = mymodel.objects.get(occupantId__iexact = parameter)
         return render(request,'hab_app/showDetails.html',{'details':details,'roDetails':roDetails})
+
+
+def showDetails2(request):
+
+    if request.method == 'GET':
+        parameter = request.GET.get('param')
+        pobj = OccupantDetails.models.get(idNo=parameter)
+        details = OccupantDetails.objects.get(idNo = parameter)
+        ROtable = AllHostelMetaData.objects.get(hostelName__iexact = request.session['username'][:-3])
+        temp = ROtable.hostelRoomOccupant
+        mymodel = apps.get_model(app_label='hab_app', model_name=temp)
+        roDetails = mymodel.objects.get(occupantId__iexact = parameter)
+        return render(request,'hab_app/showDetails2.html',{'details':details,'roDetails':roDetails})
 
 
 
@@ -35,12 +48,11 @@ def user_login(request):
         if Login.objects.filter(webmail=username).count() == 1:
 
             if username == "chr_hab":
-                return render(request,'hab_app/chrView.html')
+                hostels = AllHostelMetaData.objects.all()
+                return render(request,'hab_app/chrView.html',{'hostels':hostels})
 
             elif username[-3:]== "off":
                 username = username[:-3]
-                global hostel
-                hostel = username
                 ROtable = AllHostelMetaData.objects.get(hostelName__iexact = username)
                 return render(request,'hab_app/caretakerView.html',{'ROtable':ROtable})
             elif username[:3]== "hod":
@@ -53,13 +65,13 @@ def user_login(request):
 
 
 def home(request):
-    ROtable = AllHostelMetaData.objects.get(hostelName__iexact = hostel)
+    ROtable = AllHostelMetaData.objects.get(hostelName__iexact = request.session['username'][:-3])
     return render(request,'hab_app/caretakerView.html',{'ROtable':ROtable})
 
 
 def vacate(request):
 
-    ROtable = AllHostelMetaData.objects.get(hostelName__iexact = hostel)
+    ROtable = AllHostelMetaData.objects.get(hostelName__iexact = request.session['username'][:-3])
     temp = ROtable.hostelRoomOccupant
     mymodel = apps.get_model(app_label='hab_app', model_name=temp)
     now = datetime.now()
@@ -74,11 +86,10 @@ def vacate(request):
 
 
 def allot(request):
-    ROtable = AllHostelMetaData.objects.get(hostelName__iexact = hostel)
-    tobeAlloted = UpcomingOccupant.objects.filter(hostelName__iexact = hostel)
-    # tobeAlloted2 = UpcomingOccupantRequest.objects.filter(hostelName__iexact = hostel)
+    ROtable = AllHostelMetaData.objects.get(hostelName__iexact = request.session['username'][:-3])
+    tobeAlloted = UpcomingOccupant.objects.filter(hostelName__iexact = request.session['username'][:-3])
+    # tobeAlloted2 = UpcomingOccupantRequest.objects.filter(hostelName__iexact = request.session['username'][:-3])
     return render(request,'hab_app/allot.html',{'ROtable':ROtable,'tobeAlloted':tobeAlloted})
-
 
 
 def chrAllot(request):
@@ -97,15 +108,15 @@ def chrAllot(request):
         return render(request,'hab_app/addOccupant.html',{'form':form})
 
 def addDetails(request):
-    ROtable = AllHostelMetaData.objects.get(hostelName__iexact = hostel)
+    ROtable = AllHostelMetaData.objects.get(hostelName__iexact = request.session['username'][:-3])
     temp = ROtable.hostelRoomOccupant
     mymodel = apps.get_model(app_label='hab_app', model_name=temp)
     if request.method == 'POST':
 
         form1 = HostelRoomOccupantRelationForm(data=request.POST)
-        form2 = OccupantDetailsForm(data=request.POST)
-
+        form2 = OccupantDetailsForm(request.POST, request.FILES)
         if form1.is_valid():
+            print("tes")
             occupantId = form1.cleaned_data['occupantId']
             occupant = form1.save(commit=False)
             p = mymodel(occupantId = occupantId)
@@ -124,8 +135,12 @@ def addDetails(request):
                 instance = form2.save(commit=False)
                 instance.idNo = occupantId
                 instance.save()
+            else:
+                print(form2.errors)
+        else:
+            print(form1.errors)
         log = UpcomingOccupant.objects.get(occupantId = occupantId).delete()
-        tobeAlloted = UpcomingOccupant.objects.filter(hostelName__iexact = hostel)
+        tobeAlloted = UpcomingOccupant.objects.filter(hostelName__iexact = request.session['username'][:-3])
         return render(request,'hab_app/allot.html',{'ROtable':ROtable,'tobeAlloted':tobeAlloted})
 
     if request.method == 'GET':
@@ -140,10 +155,10 @@ def addDetails(request):
 
 def deleteDetails(request):
     if request.method == 'GET':
-        ROtable = AllHostelMetaData.objects.get(hostelName__iexact = hostel)
+        ROtable = AllHostelMetaData.objects.get(hostelName__iexact = request.session['username'][:-3])
         temp = ROtable.hostelRoomOccupant
         mymodel = apps.get_model(app_label='hab_app', model_name=temp)
-        occupantId = request.GET.get('pm')
+        occupantId = request.GET.get('param')
         occupant = mymodel.objects.get(occupantId__iexact=occupantId)
         p = Log_Table(occupantId = occupantId)
         p.hostelName = ROtable.hostelName
@@ -167,7 +182,7 @@ def deleteDetails(request):
         return render(request,'hab_app/vacate.html',{'ROtable':ROtable,'tobeVacated':tobeVacated})
 
 def existingOccupants(request):
-    ROtable = AllHostelMetaData.objects.get(hostelName__iexact = hostel)
+    ROtable = AllHostelMetaData.objects.get(hostelName__iexact = request.session['username'][:-3])
     temp = ROtable.hostelRoomOccupant
     mymodel = apps.get_model(app_label='hab_app', model_name=temp)
     relation = mymodel.objects.all()
@@ -183,7 +198,7 @@ def roomDetails(request):
         index = request.GET.get('param')
         #occupied rooms
         #get the relation table name and room table name
-        ROtable = AllHostelMetaData.objects.get(hostelName__iexact = hostel)
+        ROtable = AllHostelMetaData.objects.get(hostelName__iexact = request.session['username'][:-3])
         relation_table = ROtable.hostelRoomOccupant
         room_table = ROtable.hostelRoom
         # get the model names for query
@@ -195,9 +210,9 @@ def roomDetails(request):
         for i in relation:
             if OccupantDetails.objects.filter(idNo__iexact=i.occupantId).count() == 1:
                 occupants.append(OccupantDetails.objects.get(idNo__iexact=i.occupantId))
-        for i in relation:
-            if room_model.objects.filter(roomNo = i.roomNo).count() == 1:
-                room_list.append(room_model.objects.get(roomNo = i.roomNo))
+                if room_model.objects.filter(roomNo = i.roomNo).count() == 1:
+                    room_list.append(room_model.objects.get(roomNo = i.roomNo))
+
         zipped = zip(room_list,occupants)
         #for empty rooms
         empty_rooms = list()
@@ -286,3 +301,37 @@ def chrDisapproveApplication(request):
             guest.save()
     applicants = UpcomingOccupantRequest.objects.filter( isApprovedFirst = "Approved",isApprovedChr = "Pending" )
     return render(request,"hab_app/chrApproveApplication.html",{'applicants':applicants})
+
+def chrViewRoom(request):
+    if request.method == 'GET':
+        if request.GET.get('param') :
+            hostel = request.GET.get('param')
+            ROtable = AllHostelMetaData.objects.get(hostelName__iexact = hostel)
+            relation_table = ROtable.hostelRoomOccupant
+            room_table = ROtable.hostelRoom
+            # get the model names for query
+            relation_model = apps.get_model(app_label='hab_app', model_name=relation_table)
+            room_model = apps.get_model(app_label='hab_app', model_name=room_table)
+            relation = relation_model.objects.all()
+            occupants = list()
+            room_list = list()
+            for i in relation:
+                if OccupantDetails.objects.filter(idNo__iexact=i.occupantId).count() == 1:
+                    occupants.append(OccupantDetails.objects.get(idNo__iexact=i.occupantId))
+                    if room_model.objects.filter(roomNo = i.roomNo).count() == 1:
+                        room_list.append(room_model.objects.get(roomNo = i.roomNo))
+
+            zipped = zip(room_list,occupants)
+            #for empty rooms
+            empty_rooms = list()
+            all_rooms = room_model.objects.all()
+            for i in all_rooms:
+                flag = 0
+                for j in room_list:
+                    if i.roomNo == j.roomNo:
+                        flag = 1
+                        break
+                if flag == 0:
+                    empty_rooms.append(i)
+            hostels = AllHostelMetaData.objects.all()
+            return render(request,'hab_app/chrViewRoom.html',{'ROtable':ROtable,'zipped':zipped ,'empty_rooms':empty_rooms,'hostels':hostels})

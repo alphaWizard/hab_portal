@@ -3,7 +3,7 @@
 
 
 
-<form enctype="multipart/form-data" method="post">
+<form enctype="multipart/form-data" method="post" onSubmit="return validateImage();">
     {% csrf_token %}
 
     <table class="table table-striped">
@@ -27,9 +27,9 @@
 </td>
 <td>
 <div class="fieldWrapper">
-  {{ form2.idNo.errors }}
-  {{ form2.idNo.label_tag }}
-  {{ form2.idNo }}
+  {{ form1.occupantId.errors }}
+  {{ form1.occupantId.label_tag }}
+  {{ form1.occupantId }}
 </div>
 </td>
 </tr>
