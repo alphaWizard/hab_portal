@@ -10,7 +10,9 @@
           <th>Contact</th>
           <th>Clearance status</th>
           <th>Details</th>
+          {% if permission %}
           <th>Vacated</th>
+          {% endif %}
       </tr>
   </thead>
 
@@ -24,9 +26,11 @@
           <td>{{i.contact}}</td>
           <td>{{ i.messStatus }}</td>
           <td><a href="{% url 'hab_app:showDetails' %}?param={{ i.occupantId }}" >Details</a></td>
+          {% if permission %}
           <td><a href="{% url 'hab_app:deleteDetails' %}?param={{ i.occupantId }}" onclick="return confirm('Are you sure you want vacate?');">
           <span class="glyphicon glyphicon-trash"></span>
         </a></td>
+        {% endif %}
       </tr>
       {% endfor %}
   </tbody>

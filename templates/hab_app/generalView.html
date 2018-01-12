@@ -24,7 +24,6 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 {# datetime#}
   <link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/themes/redmond/jquery-ui.css" rel="Stylesheet" />
-  <script language="javascript" type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/jquery-ui.min.js"></script>
 {# datetime#}
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -44,13 +43,45 @@
 
   <header class="main-header">
     <!-- Logo -->
-
+    <a href="{% url 'hab_app:login_page' %}" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-
+      <span class="logo-mini"><b>H</b>AB</span>
       <!-- logo for regular state and mobile devices -->
-
+      <span class="logo-lg"><b>HAB</b></span>
+    </a>
     <!-- Header Navbar: style can be found in header.less -->
+    <nav class="navbar navbar-static-top">
+      <!-- Sidebar toggle button-->
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
 
+          <li class="dropdown user user-menu">
+            <a href="{% url 'logout1' %}" >
+
+              <span class="hidden-xs">Logout</span>
+            </a>
+
+          </li>
+          <!-- Control Sidebar Toggle Button -->
+
+        </ul>
+      </div>
+
+      <div class="navbar-custom-menu" >
+        <ul class="nav navbar-nav" align="center">
+
+          <li class="dropdown user user-menu">
+            <a href="{% url 'logout1' %}" class="dropdown-toggle" data-toggle="dropdown">
+
+              <span class="hidden-xs">{{request.user}}</span>
+            </a>
+
+          </li>
+          <!-- Control Sidebar Toggle Button -->
+
+        </ul>
+      </div>
+    </nav>
   </header>
   <!-- Left side column. contains the logo and sidebar -->
 
@@ -60,24 +91,15 @@
 
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
-
-      <!-- Sidebar user panel (optional) -->
-
-
-      <!-- search form (Optional) -->
-
-      <!-- /.search form -->
-
-      <!-- Sidebar Menu -->
-      <li class="sidebar-search">
-        <div class="input-group custom-search-form" style="text-align:center;">
-          <a href="{% url 'hab_app:index' %}"><img width="45%" src="{% static 'images/iitg.png' %}"></a>
+      <div class="user-panel">
+        <div class="pull-left image">
+          <a href="http://www.iitg.ac.in"><img width="45%" src="{% static 'images/iitg.png' %}"></a>
         </div>
-                                <!-- /input-group -->
-      </li>
+  </div>
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">HEADER</li>
         <!-- Optionally, you can add icons to the links -->
+        <li><a href="{% url 'home' %}"> <span>Home</span></a></li>
         <li><a href="{% url 'hab_app:generalAllot' %}"> <span>Allot Room To Guest</span></a></li>
         <li><a href="{% url 'hab_app:trackApplication' %}"> <span>Track Applications</span></a></li>
 
@@ -144,14 +166,13 @@
 <script src="{% static 'bower_components/jquery-slimscroll/jquery.slimscroll.min.js' %}"></script>
 <!-- FastClick -->
 <script src="{% static 'bower_components/fastclick/lib/fastclick.js' %}"></script>
+<script src="{% static 'bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js' %}"></script>
 <!-- AdminLTE App -->
 <script src="{% static 'dist/js/adminlte.min.js' %}"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{% static 'dist/js/demo.js' %}"></script>
 <!-- page script -->
 <link rel="stylesheet" type="text/css" href="http://jquery-ui.googlecode.com/svn/tags/latest/themes/base/jquery-ui.css" media="all" />
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 <script type="text/javascript">
   $(function(){
     $("#id_From_Date").datepicker({ dateFormat: 'yy-mm-dd' });

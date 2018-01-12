@@ -5,8 +5,8 @@
     <tr>
         <th>Name</th>
         <th>ApplicantId</th>
-        <th>Approval Of HoD/SA</th>
         <th>Approval Of Chr Hab</th>
+        <th>Comments</th>
     </tr>
 </thead>
 
@@ -15,8 +15,8 @@
   <tr>
         <td>{{ i.guestname }}</td>
         <td>{{ i.id_no }}</td>
-        <td>{{i.isApprovedFirst}}</td>
         <td>{{ i.isApprovedChr }}</td>
+        <td>{{ i.comments }}</td>
 
     </tr>
     {% endfor %}

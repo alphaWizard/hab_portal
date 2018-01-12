@@ -1,0 +1,169 @@
+{% load staticfiles %}
+{% load editor_extras %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{% block title %}{% endblock %}</title>
+
+{#    <link rel="stylesheet" href="{% static 'editor/css/bootstrap.css' %}">#}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'editor/css/custom.css' %}">
+    <link rel="stylesheet" href="{% static 'editor/css/footer.css' %}">
+
+
+    <style type="text/css">
+        .nav-pills li a {
+            color: #494949;
+            font-size: 14.5px;
+            font-weight: 300;
+            transform: scale(0.998, 1.037);
+            -webkit-border-radius: 0;
+            -moz-border-radius: 0;
+            border-radius: 0;
+        }
+
+        .nav-pills > li.active > a,
+        .nav-pills > li.active > a:hover,
+        .nav-pills > li.active > a:focus {
+            color: white;
+            background-color: #4866B0;
+        }
+        ul.nav li.dropdown:hover ul.dropdown-menu {
+            display: block;
+        }
+    </style>
+    {% block extra_styles %}
+    {% endblock %}
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="navbar navbar-default navbar-inner"
+         style="background-color:transparent; border:0; margin-bottom:-10px;">
+
+        <div class="navbar-header">
+            <a href="#">
+                <img style="margin-top:10px;" src="{% static 'editor/images/logo_sgc.jpg' %}">
+            </a>
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target=".navbar-menubuilder">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <div class="container">
+            <div class="collapse navbar-collapse navbar-menubuilder"
+                 style="margin-top:10px; margin-right:15px">
+                <ul class="nav nav-pills navbar-right">
+                    <li>
+                        <a href="">Home</a>
+                    </li>
+                    <li class="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        <a href="/gymkhana/senate/">
+                          Senate  <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                                <li>
+                                    <a href="">Minutes</a>
+                                </li>
+                                <li>
+                                    <a href="">Sub-comittees</a>
+                                </li>
+                        </ul>
+                    </li>
+                    {% boards_list as board_list_var %}
+                    {% if board_list_var.count %}
+                        {% for board in board_list_var %}
+                            <li class="dropdown">
+                                <a href="{% url 'editor:board-detail' board.id %}" role="button" aria-haspopup="true" aria-expanded="false">
+                                    {{ board.name }} <span class="caret"></span>
+                                </a>
+                                {% clubs_list board.id as club_list_var%}
+                                {% if club_list_var.count > 0 %}
+                                    <ul class="dropdown-menu">
+                                        {% for club in club_list_var %}
+                                            <li>
+                                                <a href="{% url 'editor:club-detail' club.id %}">{{club.name}}</a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    {% endif %}
+                    <li>
+                        <a href="{% url 'editor:login' %}">Login</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- Nav-bar ends here -->
+    <hr>
+</div>
+
+{% block content %} {% endblock %}
+
+<script type="text/javascript" src="{% static 'editor/js/hover.js' %}"></script>
+
+{% block end_scripts %}{% endblock %}
+<br>
+<br>
+<footer>
+    <div class="footer" id="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4  col-md-4 col-sm-4 col-xs-12">
+                    <h3>Useful Links</h3>
+                    <ul>
+                        <li> <a href="#"> Lorem Ipsum </a> </li>
+                        <li> <a href="#"> Lorem Ipsum </a> </li>
+                        <li> <a href="#"> Lorem Ipsum </a> </li>
+                        <li> <a href="#"> Lorem Ipsum </a> </li>
+                    </ul>
+                </div>
+                <div class="col-lg-4  col-md-4 col-sm-4 col-xs-12">
+                    <h3>Useful Links</h3>
+                    <ul>
+                        <li> <a href="#"> Lorem Ipsum </a> </li>
+                        <li> <a href="#"> Lorem Ipsum </a> </li>
+                        <li> <a href="#"> Lorem Ipsum </a> </li>
+                        <li> <a href="#"> Lorem Ipsum </a> </li>
+                    </ul>
+                </div>
+                <div class="col-lg-4  col-md-4 col-sm-4 col-xs-12">
+                    <h3>Social</h3>
+                    <ul class="social">
+                        <li><a href="#"><img src="{% static 'editor/icons/facebook_24.svg' %}"></a></li>
+                        <li><a href="#"><img src="{% static 'editor/icons/twitter_24.svg' %}"></a></li>
+                        <li><a href="#"><img src="{% static 'editor/icons/youtube_24.svg' %}"></a></li>
+                    </ul>
+                </div>
+            </div>
+            <!--/.row-->
+        </div>
+        <!--/.container-->
+    </div>
+    <!--/.footer-->
+
+    <div class="footer-bottom">
+        <div class="container">
+            <p class="pull-left"> Copyright © 2017 SWC, IIT Guwahati. All right reserved. </p>
+        </div>
+    </div>
+    <!--/.footer-bottom-->
+</footer>
+    <script src="{% static 'editor/js/jquery.js' %}"></script>
+    <script src="{% static 'editor/js/bootstrap.js' %}"></script>
+</body>
+</html>

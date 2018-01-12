@@ -1,0 +1,78 @@
+{%extends 'student_portal/base.html'%}
+
+{# load static #}
+{%block body_block%}
+<br>
+<h2>
+
+<div style="text-align:center">
+  <script>
+
+    $(document).ready(function () {
+
+        $('select').change(function () {
+
+            if ($('select option[value="' + $(this).val() + '"]:selected').length > 1)
+            {
+                if ($("#id_h1 option:selected").val() != "NA"  && $("#id_h2 option:selected").val() != "NA")
+                {
+                  alert('you have already selected this item');
+                  $(this).val("NA");
+                }
+
+                // $("#mydropdownlist").val("").change();
+            }
+           ;
+
+            if ($("#id_h1 option:selected").val() == "NA")
+            {
+                // console.log(4);
+                $('select').val("NA").trigger('click');
+
+            }
+            // console.log(88);
+            if ($("#id_h3 option:selected").val() != "NA" && $("#id_h2 option:selected").val() == "NA")
+            {
+                // console.log(5);
+                  // console.log(6);
+                  $('#id_h2').val("NA").trigger('click');
+                  $('#id_h3').val("NA").trigger('click');
+            };
+
+
+            });
+
+    });
+</script>
+    <script>
+      n =  new Date();
+      y = n.getFullYear();
+      m = (n.getMonth()+1)%12;
+      if( n.getMonth() == 11 )
+      {
+        y = y + 1;
+      }
+
+      var monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+      ];
+      document.write("Mess Preference Form for " + monthNames[m] + " " + y);
+    </script>
+</div>
+</h2>
+<div class="panel panel-default">
+  <div class="panel-body" style="text-align:center" >
+    <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {% include 'student_portal/preference_fields.html' %}
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <br>
+          <button type="submit" class="btn btn-success"> Submit </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+{%endblock%}

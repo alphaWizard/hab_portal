@@ -45,24 +45,46 @@
 
   <header class="main-header">
     <!-- Logo -->
-
-    <a href="{% url 'hab_app:index' %}" class="logo">
-     <!-- mini logo for sidebar mini 50x50 pixels -->
-     <span class="logo-mini"><b>A</b>LT</span>
-     <!-- logo for regular state and mobile devices -->
-     <span class="logo-lg"><b>HAB</b></span>
-   </a>
+    <a href="{% url 'hab_app:login_page' %}" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-
+      <span class="logo-mini"><b>H</b>AB</span>
       <!-- logo for regular state and mobile devices -->
-
+      <span class="logo-lg"><b>HAB</b></span>
+    </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
-      <h2 style=" text-align : center;color:white;">Welcome to  Caretaker of {{ ROtable.hostelName}} </h2>
+      <!-- Sidebar toggle button-->
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
 
+          <li class="dropdown user user-menu">
+            <a href="{% url 'logout1' %}" >
+
+              <span class="hidden-xs">Logout</span>
+            </a>
+
+          </li>
+          <!-- Control Sidebar Toggle Button -->
+
+        </ul>
+      </div>
+
+      <div class="navbar-custom-menu" >
+        <ul class="nav navbar-nav" align="center">
+
+          <li class="dropdown user user-menu">
+            <a href="{% url 'logout1' %}" class="dropdown-toggle" data-toggle="dropdown">
+
+              <span class="hidden-xs">Caretaker Of {{ ROtable.hostelName}}</span>
+            </a>
+
+          </li>
+          <!-- Control Sidebar Toggle Button -->
+
+        </ul>
+      </div>
     </nav>
   </header>
-
   <!-- Left side column. contains the logo and sidebar -->
 
 
@@ -71,24 +93,17 @@
 
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
-
-      <!-- Sidebar user panel (optional) -->
-
-
-      <!-- search form (Optional) -->
-
-      <!-- /.search form -->
-
-      <!-- Sidebar Menu -->
-      <li class="sidebar-search">
-        <div class="input-group custom-search-form" style="text-align:center;">
+      <div class="user-panel">
+        <div class="pull-left image">
           <a href="http://www.iitg.ac.in"><img width="45%" src="{% static 'images/iitg.png' %}"></a>
         </div>
-                                <!-- /input-group -->
-      </li>
+  </div>
+      <!-- Sidebar Menu -->
+
       <ul class="sidebar-menu" data-widget="tree" id="xyz">
         <li class="header">HEADER</li>
         <!-- Optionally, you can add icons to the links -->
+        <li ><a  href="{% url 'home' %}"> <span>Home</span></a></li>
         <li ><a  href="{% url 'hab_app:vacate' %}"> <span>Rooms to be vacated</span></a></li>
         <li><a href="{% url 'hab_app:allot' %}"> <span>Rooms to be alloted</span></a></li>
         <li><a href="{% url 'hab_app:existingOccupants' %}"> <span>Existing Occupants</span></a></li>
@@ -179,8 +194,15 @@
 <!-- AdminLTE for demo purposes -->
 <script src="{% static 'dist/js/demo.js' %}"></script>
 <!-- page script -->
+<script src="{% static 'bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js' %}"></script>
 <link rel="stylesheet" type="text/css" href="http://jquery-ui.googlecode.com/svn/tags/latest/themes/base/jquery-ui.css" media="all" />
-
+<script type="text/javascript">
+  $(function(){
+    $("#id_toRoomStay").datepicker({ dateFormat: 'yy-mm-dd' });
+    $("#id_fromRoomStay").datepicker({ dateFormat: 'yy-mm-dd' });
+    // $("#id_january","#id_jan_range").change();
+  });
+</script>
 
 
 <script>

@@ -12,6 +12,11 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 
+#celery stuff
+import djcelery
+djcelery.setup_loader()
+BROKER_URL = 'django://'
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATE_DIR = os.path.join(BASE_DIR,"templates")
@@ -26,11 +31,11 @@ SECRET_KEY = 'prfoa^@yv_me)7@^@-gi&ovrt+x#0#o$q1t=va_y9zizuaedoc'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*',]
 
 SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
 
-
+DATE_INPUT_FORMATS = ['%m/%d/%Y']
 # Application definition
 
 
@@ -49,8 +54,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'hab_app',
-    'django_mailbox',
-    'import_export'
+
+    'import_export',
+    'bootstrap3',
+
+    'student_portal',
+    'django_celery_results',
+    'djcelery',
+
 ]
 
 MIDDLEWARE = [
@@ -77,6 +88,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.request',
+                'hab_app.context_processors.metadata_processor',
             ],
         },
     },
@@ -90,12 +102,8 @@ WSGI_APPLICATION = 'hab_portal.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'hab_portal',
-        'USER': 'rajas',
-        'PASSWORD': 'rajasB6*3',
-        'HOST': 'localhost',
-        'PORT': '',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
@@ -140,6 +148,18 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [STATIC_DIR,]
 
 MEDIA_ROOT = MEDIA_DIR
-MEDIA_URL = '/media/'
+MEDIA_URL = '/hab_portal/media/'
 
 LOGIN_URL = '/hab_app/user_login'
+try:
+    from local_settings import *
+except ImportError:
+    pass
+
+# CELERY STUFF
+BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'

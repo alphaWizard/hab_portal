@@ -1,0 +1,57 @@
+{% extends "hab_app/chrView.html" %}
+
+{% block body_block %}
+
+
+   <!-- Main content -->
+   <section class="content">
+
+     <div class="row">
+
+
+       <div class="col-md-12">
+         <!-- LINE CHART -->
+         <h2 align=center>OPI Comparision: Over-Hostel</h2>
+         <div class="box box-info">
+           <div class="box-header with-border">
+             <h3 class="box-title">Line Chart</h3>
+
+
+           <div class="box-body chart-responsive">
+             <div class="chart" id="line-chart" style="height: 300px;"></div>
+           </div>
+           <!-- /.box-body -->
+         </div>
+         <!-- /.box -->
+
+         <br>
+         <br>
+         <!-- BAR CHART -->
+
+         <h2 align=center>OPI Comparision: Over-Time</h2>
+         <div class="box box-success">
+           <div class="box-header with-border">
+             <h3 class="box-title">Bar Chart</h3>
+
+
+           <div class="box-body chart-responsive">
+             <div class="chart" id="bar-chart" style="height: 300px;"></div>
+           </div>
+           <!-- /.box-body -->
+         </div>
+         <!-- /.box -->
+
+       </div>
+
+     </div>
+
+ </div>
+
+</div>
+
+</section>
+
+
+
+
+{% endblock %}

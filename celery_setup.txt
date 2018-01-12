@@ -1,0 +1,28 @@
+
+											HELPFUL LINKS --:
+
+ student_app:
+	celery:
+		https://realpython.com/blog/python/asynchronous-tasks-with-django-and-celery/
+		http://rapidsms.readthedocs.io/en/develop/topics/celery.html
+		http://docs.celeryproject.org/en/latest/userguide/periodic-tasks.html
+		
+		FOR LOCALHOST --
+		COMMANDS: 1. python3 manage.py celery beat
+			  2. python3 manage.py celery worker --loglevel=info
+			  3. python3 manage.py runserver
+
+	
+
+
+
+
+
+
+
+
+OTHERS:
+
+	if delete database , run : python3 createcachetable
+
+	

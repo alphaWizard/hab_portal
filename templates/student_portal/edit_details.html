@@ -1,0 +1,15 @@
+{%extends 'student_portal/base.html'%}
+
+{# load static #}
+{%block body_block%}
+
+<form method="POST" >
+  {% csrf_token %}
+  <table align="center" border="5">
+    {{ form }}
+  </table>
+  <button type="submit" class="save btn btn-primary">Save</button>
+    </form>
+
+
+{%endblock%}

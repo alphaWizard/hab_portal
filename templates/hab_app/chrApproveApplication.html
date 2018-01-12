@@ -5,8 +5,7 @@
     <tr>
         <th>Name</th>
         <th>ApplicantId</th>
-        <th>Details</th>
-        <th>Approve/Disapprove</th>
+        <th>Approve</th>
 
     </tr>
 </thead>
@@ -16,9 +15,7 @@
   <tr>
         <td>{{ i.guestname }}</td>
         <td>{{ i.id_no }}</td>
-        <td>#</td>
-        <td><a class="btn btn-primary" href="{% url 'hab_app:chrApproveApplication' %}?param={{i.id_no}}" role="button">Approve</a> /
-        <a class="btn btn-primary" href="{% url 'hab_app:chrDisapproveApplication' %}?param={{i.id_no}}" role="button">Disapprove</a></td>
+        <td><a class="btn btn-primary" href="{% url 'hab_app:chrApproveApplication' %}?param={{i.id_no}}" role="button">Approve</a></td>
 
     </tr>
     {% endfor %}
