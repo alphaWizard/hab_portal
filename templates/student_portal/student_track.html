@@ -1,0 +1,27 @@
+{% extends 'student_portal/base.html' %}
+{% block body_block %}
+
+<thead>
+    <tr>
+        <th>Date Created</th>
+        <th>Date Updated</th>
+        <th>ApplicantId</th>
+        <th>Approval Of Caretaker</th>
+        <th>Comments</th>
+    </tr>
+</thead>
+
+<tbody>
+  {% for i in req %}
+  <tr>
+        <td>{{ i.created }}</td>
+        <td>{{ i.updated }}</td>
+        <td>{{ i.idNo }}</td>
+        <td>{{ i.ct_approval }}</td>
+        <td>{{ i.comments }}</td>
+
+    </tr>
+    {% endfor %}
+</tbody>
+
+{% endblock %}

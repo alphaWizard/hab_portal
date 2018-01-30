@@ -1,0 +1,18 @@
+
+
+webmail :- {{ request.user.username }}
+<form enctype="multipart/form-data" method="post">
+  {% csrf_token %}
+
+OccupantId(Roll No): <br>
+
+<input type="text" name="OccupantId" ><br>
+
+HostelName: <br>
+<input type="text" name="HostelName" ><br>
+
+  <input type="submit" name="" value="Add" class="btn btn-primary">
+
+
+
+</form>

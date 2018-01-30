@@ -1,0 +1,143 @@
+{% extends "hab_app/chrView.html" %}
+
+
+{% block body_block %}
+<style>
+#mess {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#mess td, #mess th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#mess tr:nth-child(even){background-color: #f2f2f2;}
+
+#mess tr:hover {background-color: #ddd;}
+
+#mess th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #4CAF50;
+    color: white;
+}
+</style>
+
+
+
+  <div class="box-header">
+    <div style=text-align:center>
+    <br>
+    <h2 class="box-title">SELECT APPROPIATE FIELDS AND PROCEED TO EXPORT AND IMPORT FILE OPTIONS</h2>
+    </div>
+  </div>
+
+  <div class="box box-info">
+
+     <div class="box-body">
+        <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+        <div style=text-align:center>
+
+              <div class="form-group">
+                <div class ="col-sm-offset-2 col-sm-10">
+                  <span class="test-danger small"> {{ form.hostelName.errors }} </span>
+                </div>
+                <label class="control-label col-sm-2"> {{ form.hostelName.label_tag }}</label>
+                <div class="col-sm-10">{{form.hostelName}} </div>
+              </div>
+              <br><hr>
+              <div class="form-group">
+                <div class ="col-sm-offset-2 col-sm-10">
+                  <span class="test-danger small"> {{ form.month.errors }} </span>
+                </div>
+                <label class="control-label col-sm-2"> {{ form.month.label_tag }}</label>
+                <div class="col-sm-10">{{form.month}} </div>
+              </div>
+              <br><hr>
+
+              <div class="form-group">
+                <div class ="col-sm-offset-2 col-sm-10">
+                  <span class="test-danger small"> {{ form.year.errors }} </span>
+                </div>
+                <label class="control-label col-sm-2"> {{ form.year.label_tag }}</label>
+                <div class="col-sm-10">{{form.year}} </div>
+              </div>
+
+
+
+        </div>
+
+          <table id="mess">
+                <tr>
+                  <th>Feedback</th>
+                  <th>Preference</th>
+                </tr>
+                <tr>
+                  <td><button type="submit" class="btn btn-info" method="post" name="btn1">Export as .csv</button>(EXPORT MESS-FEEDBACKS AS CSV)</td>
+                  <td><button type="submit" class="btn btn-info" method="post" name="btn1">Export as .csv</button>(EXPORT MESS-PREFERENCE AS CSV)</td>
+                </tr>
+                <tr>
+                  <td><button type="submit" class="btn btn-info" method="post" name="btn1">Export as .xls</button>(EXPORT MESS-FEEDBACKS AS XLS)</td>
+                  <td><button type="submit" class="btn btn-info" method="post" name="btn1">Export as .xls</button>(EXPORT MESS-PREFERENCE AS XLS)</td>
+                </tr>
+          </table>
+
+
+          <div class="box-header">
+            <div style=text-align:center>
+            <br>
+            <h2 class="box-title">IMPORT FINAL MESS-PREFERENCE AS CSV</h2>
+            </div>
+          </div>
+
+            <div class="box box-info">
+                <div class="col-md-12">
+                  <div class="box-body">
+
+                    <table id="mess">
+                      <tr>
+                        <td align="center">    <input type="file" name="myfile"> <br><button type="submit" class="btn btn-info" name="btn5">Upload csv</button> </td>
+                      </tr>
+                    </table>
+
+                  </div>
+                </div>
+              </div>
+      </form>
+
+
+
+    </div>
+  </div>
+
+
+
+    <div class="col-md-12">
+    <div style=text-align:center>
+      <!-- <div class="box box-info"> -->
+
+      </div>
+      <div class="box-body">
+
+
+
+
+      </div>
+    </div>
+    </div>
+
+
+<br><br>
+
+</div>
+
+
+
+
+
+{% endblock %}

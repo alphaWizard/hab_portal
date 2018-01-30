@@ -25,4 +25,4 @@ urlpatterns = [
     url(r'^hab_portal/student_portal/', include('student_portal.urls')),
     url(r'^hab_portal/logout1/$', views.logout1,name='logout1'),
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_DIR)
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns+=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

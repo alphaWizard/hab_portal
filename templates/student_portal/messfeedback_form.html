@@ -2,62 +2,65 @@
 
 {# load static #}
 {%block body_block%}
-<br>
-<h2>
-  {% if False %}
-  <script>
-  jQuery(function(){
-     jQuery('#infoButton').click();
-  });
-  </script>
-  <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-info" id="infoButton" hidden="hidden">
-                Launch Info Modal
-              </button>
+  {% if not feedback_ON_OFF %}
 
-              <div class="modal modal-info fade" id="modal-info">
-         <div class="modal-dialog">
-           <div class="modal-content">
-             <div class="modal-header">
-               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                 <span aria-hidden="true">&times;</span></button>
-               <h4 class="modal-title">Page not active</h4>
-             </div>
-             <div class="modal-body">
-               <p>This page will be active only on certain dates of a month </p>
-             </div>
-             <div class="modal-footer">
-               <button type="button" class="btn btn-outline pull-right" data-dismiss="modal">Close</button>
 
-             </div>
-           </div>
-           <!-- /.modal-content -->
-         </div>
-         <!-- /.modal-dialog -->
-       </div>
-       <!-- /.modal -->
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+  .alert {
+      padding: 5px;
+      background-color: #f06969;
+      color: white;
+  }
+
+  .closebtn {
+      margin-left: 10px;
+      color: white;
+      font-weight: bold;
+      float: right;
+      font-size: 22px;
+      line-height: 20px;
+      cursor: pointer;
+      transition: 0.3s;
+  }
+
+  .closebtn:hover {
+      color: black;
+  }
+  </style>
+  </head>
+  <body>
+<h4>
+  <div class="alert">
+    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+    <strong>Page not active! </strong><br> <br> This page is active only on certain dates of the month .
+  </div>
+</h4>
+
+
 
 
 {% else %}
+
+<br>
+<h3>
+
+
 <div style="text-align:center">
     <script>
-      n =  new Date();
-      y = n.getFullYear();
-      m = n.getMonth();
-      m = m-1;
-      if (m<0){
-        m=11;
-        y=y-1;
-      }
+    
       var monthNames = ["January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
       ];
 
-        document.write("Mess Feedback Form for " + monthNames[m] + " " + y);
+        document.write("Mess Feedback Form for " + monthNames[{{mth}}-1] + " " + {{yr}});
 
     </script>
 </div>
+</h3>
 
-</h2>
+<hr>
 <div class="panel panel-default">
   <div class="panel-body">
     <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
@@ -66,7 +69,12 @@
       <br><br>
       <div class="form-group" style=text-align:center>
         <div class="col-sm-offset-2 col-sm-10">
-          <button type="submit" class="btn btn-success"> Submit </button>
+          {% if request.path == "/hab_portal/student_portal/messfeedback/update" %}
+               <button type="submit" class="btn btn-primary">Update </button>
+          {% else %}
+               <button type="submit" class="btn btn-success"> Submit </button>
+          {% endif %}
+
         </div>
       </div>
     </form>

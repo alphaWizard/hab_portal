@@ -11,7 +11,8 @@
           <th>Clearance status</th>
           <th>Details</th>
           {% if permission %}
-          <th>Vacated</th>
+          <th>Vacate</th>
+          <th>Edit</th>
           {% endif %}
       </tr>
   </thead>
@@ -29,6 +30,8 @@
           {% if permission %}
           <td><a href="{% url 'hab_app:deleteDetails' %}?param={{ i.occupantId }}" onclick="return confirm('Are you sure you want vacate?');">
           <span class="glyphicon glyphicon-trash"></span>
+        </a></td>
+          <td><a class="btn btn-primary btn-sm" href="{% url 'hab_app:editRODetails' %}?param={{ i.occupantId }}" >Edit
         </a></td>
         {% endif %}
       </tr>

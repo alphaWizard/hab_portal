@@ -1,6 +1,9 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 
+from datetime import datetime
+import calendar
+
 HOSTEL_CHOICES = (
         ('Barak', 'Barak'),
         ('Bramhaputra', 'Bramhaputra'),
@@ -17,10 +20,12 @@ HOSTEL_CHOICES = (
     )
 ID_CHOICES =(
     ('Rollno','Rollno'),
-    ('Project Id','Project Id'),
+    ('ProjectId','ProjectId'),
+    ('IITG_Employee Id','IITG_Employee Id'),
     ('GovtId_VoterCard','GovtId_VoterCard'),
+    ('GovtId_PANCard','GovtId PANCard'),
     ('GovtID_AadharCard','GovtID_AadharCard'),
-    ('GovtIDPassportNo','GovtIDPassportNo')
+    ('GovtID_PassportNo','GovtID_PassportNo')
 )
 
 GENDER_CHOICES =(
@@ -128,6 +133,7 @@ class HostelRoom(models.Model):
     #status as abandoned/partially damaged etc
     roomStatus = models.CharField(max_length=255,choices=ROOM_STATUS_CHOICES)
     roomOccupancyGender = models.CharField(max_length=255,choices=GENDER_CHOICES,blank=True,null=True)
+    special_category = models.IntegerField(default=0)
     comments = models.CharField(max_length=255,blank=True,null=True)
 
     def __str__(self):
@@ -139,9 +145,9 @@ class HostelRoomOccupantRelation(models.Model):
     class Meta:
         verbose_name = "HostelRoomOccupantRelation"
         verbose_name_plural = "HostelRoomOccupantRelation"
-    hostelName = models.CharField(max_length=255,null = False,blank= False)
-    roomNo = models.CharField(max_length=255,null = True,blank= True)
-    occupantId = models.CharField(max_length=255,null = True,blank= True)
+    hostelName = models.CharField(max_length=255,null = False,blank= False,choices = HOSTEL_CHOICES)
+    roomNo = models.CharField(max_length=255,null = False,blank= False,default="")
+    occupantId = models.CharField(max_length=255,null = False,blank= False,default="")
     #mess subscription status
     messStatus = models.CharField(max_length=255 ,choices = MESS_CHOICES,null = True,blank= True)
     #toMess - end date of mess subscription
@@ -171,38 +177,38 @@ class HostelViewAccess(models.Model):
 #table with all information of a particular OccupantDetails
 
 class OccupantDetails(models.Model):
-    def validate_image(fieldfile_obj):
-        filesize = fieldfile_obj.file.size
-        megabyte_limit = 5.0
-        if filesize > megabyte_limit*1024*1024:
-            raise ValidationError("Max file size is %sMB" % str(megabyte_limit))
+    # def validate_image(fieldfile_obj):
+    #     filesize = fieldfile_obj.file.size
+    #     megabyte_limit = 0.5
+    #     if filesize > megabyte_limit*1024*1024:
+    #         raise ValidationError("Max file size is %sMB" % str(megabyte_limit))
     class Meta:
         verbose_name = "OccupantDetails"
         verbose_name_plural = "OccupantDetails"
-    name = models.CharField(max_length=255,null = True,blank= True)
+    name = models.CharField(max_length=255,null = False,blank= False,default="")
     #id type - roll no/aadhar no/project id etc
-    idType = models.CharField(max_length=255,choices = ID_CHOICES,null = True,blank= True)
+    idType = models.CharField(max_length=255,choices = ID_CHOICES,null = False,blank= False,default="Rollno")
     #rollno/aadhar no etc
     #primary_key removed temp
-    idNo = models.CharField(max_length=255,primary_key=True,null=False)
+    idNo = models.CharField(max_length=255,primary_key=True,null=False,blank=False,default="")
 #vgv
-    gender = models.CharField(max_length=255,choices = GENDER_CHOICES,null = True,blank= True)
+    gender = models.CharField(max_length=255,choices = GENDER_CHOICES,null = False,blank= False,default="Male")
     #specially abled/differently abled
-    saORda = models.CharField(max_length=255,choices = ABILITY_CHOICES,null = True,blank= True)
+    saORda = models.CharField(max_length=255,choices = ABILITY_CHOICES,null = False,blank= False,default="No")
     webmail = models.CharField(max_length=255,null = True,blank= True)
-    altEmail = models.CharField(max_length=255,null = True,blank= True)
-    mobNo = models.CharField(max_length=255,null = True,blank= True)
-    emgercencyNo = models.CharField(max_length=255)
-    photo = models.ImageField(upload_to='profile_pics',blank=True,validators=[validate_image],null=True)
-    idPhoto = models.ImageField(upload_to='id_pics',blank=True,validators=[validate_image],null=True)
-    Address=models.CharField(max_length=300,null = True,blank= True)
-    Pincode=models.PositiveIntegerField( validators=[MaxValueValidator(999999)],null = True,blank= True)
+    altEmail = models.EmailField(max_length=255,null = False,blank= False,default="abc@xyz.com")
+    mobNo = models.CharField(max_length=12,null = False,blank= False,default="")
+    emgercencyNo = models.CharField(max_length=12,null = False,blank= False,default="")
+    photo = models.ImageField(upload_to='profile_pics',blank=True,null=True)
+    idPhoto = models.ImageField(upload_to='id_pics',blank=True,null=True)
+    Address=models.CharField(max_length=300,null = False,blank= False,default="")
+    Pincode=models.PositiveIntegerField( validators=[MaxValueValidator(999999)],null = False,blank= False,default="0")
     bankName = models.CharField(max_length=255,null = True,blank= True)
     bankAccount = models.CharField(max_length=255,null = True,blank= True)
     IFSCCode = models.CharField(max_length=255,null = True,blank= True)
     #account holder name
     accHolderName = models.CharField(max_length=255,null = True,blank= True)
-
+    flag = models.IntegerField(default=0)
     def __str__(self):
         return str(self.name)
 #following are the hostelRoom,roomOccupantRelation and view access tables for each hostel(13*3=39 tables)
@@ -210,10 +216,50 @@ class OccupantDetails(models.Model):
 #hostelView inherits HostelViewAccess
 #hostelRORelation inherits HostelRoomOccupantRelation
 
+class TemporaryDetails(models.Model):
+    # def validate_image(fieldfile_obj):
+    #     filesize = fieldfile_obj.file.size
+    #     megabyte_limit = 0.5
+    #     if filesize > megabyte_limit*1024*1024:
+    #         raise ValidationError("Max file size is %sMB" % str(megabyte_limit))
+    class Meta:
+        verbose_name = "TemporaryDetails"
+        verbose_name_plural = "TemporaryDetails"
+    name = models.CharField(max_length=255,null = False,blank= False,default="")
+    #id type - roll no/aadhar no/project id etc
+    idType = models.CharField(max_length=255,choices = ID_CHOICES,null = False,blank= False,default="Rollno")
+    #rollno/aadhar no etc
+    #primary_key removed temp
+    idNo = models.CharField(max_length=255,null=False,blank=False,default="")
+#vgv
+    gender = models.CharField(max_length=255,choices = GENDER_CHOICES,null = False,blank= False,default="Male")
+    #specially abled/differently abled
+    saORda = models.CharField(max_length=255,choices = ABILITY_CHOICES,null = False,blank= False,default="No")
+    webmail = models.CharField(max_length=255,null = True,blank= True)
+    altEmail = models.CharField(max_length=255,null = False,blank= False,default="abc@xyz.com")
+    mobNo = models.CharField(max_length=12,null = False,blank= False,default="")
+    emgercencyNo = models.CharField(max_length=12,null = False,blank= False,default="")
+    photo = models.ImageField(upload_to='profile_pics',blank=True,null=True)
+    idPhoto = models.ImageField(upload_to='id_pics',blank=True,null=True)
+    Address=models.CharField(max_length=300,null = False,blank= False,default="")
+    Pincode=models.PositiveIntegerField( validators=[MaxValueValidator(999999)],null = False,blank= False,default="0")
+    bankName = models.CharField(max_length=255,null = True,blank= True)
+    bankAccount = models.CharField(max_length=255,null = True,blank= True)
+    IFSCCode = models.CharField(max_length=255,null = True,blank= True)
+    #account holder name
+    accHolderName = models.CharField(max_length=255,null = True,blank= True)
+    ct_approval = models.CharField(max_length=255,choices = STATUS_CHOICES,default = "Pending")
+    comments = models.CharField(max_length=255,null = True,blank= True)
+    flag = models.IntegerField(default=0)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    def __str__(self):
+        return str(self.name)
+
 class UpcomingOccupantRequest(models.Model):
     def validate_image(fieldfile_obj):
         filesize = fieldfile_obj.file.size
-        megabyte_limit = 5.0
+        megabyte_limit = 0.5
         if filesize > megabyte_limit*1024*1024:
             raise ValidationError("Max file size is %sMB" % str(megabyte_limit))
     # hostelName = models.CharField(max_length=255,choices = HOSTEL_CHOICES)
@@ -227,16 +273,16 @@ class UpcomingOccupantRequest(models.Model):
     Pincode=models.PositiveIntegerField(null=False, validators=[MaxValueValidator(999999)])
     Mobile_No=models.PositiveIntegerField(null=False, validators=[MaxValueValidator(9999999999)])
     Emergency_Mobile_No=models.PositiveIntegerField(null=False, validators=[MaxValueValidator(9999999999)])
-    Webmail_id=models.CharField(max_length=255)
+    Webmail_id=models.CharField(max_length=255,null=True,blank=True)
     Alternate_email_id=models.EmailField(null=False)
-    Bank_Name=models.CharField(max_length=255,null=False)
-    Account_Holder_Name =models.CharField(max_length=255,null=False)
-    Bank_Account_No=models.IntegerField(null=False)
-    IFSCCode = models.CharField(max_length=255,null=False)
+    Bank_Name=models.CharField(max_length=255,null=True,blank=True)
+    Account_Holder_Name =models.CharField(max_length=255,null=True,blank=True)
+    Bank_Account_No=models.IntegerField(null=True,blank=True)
+    IFSCCode = models.CharField(max_length=255,null=True,blank=True)
     From_Date=models.DateField()
     To_Date=models.DateField()
-    Purpose_Of_Stay=models.CharField(max_length=255,choices = PURPOSE_CHOICES)
-    Preference_Room=models.ForeignKey(RoomCategory)
+    Purpose_Of_Stay=models.CharField(max_length=255,choices = PURPOSE_CHOICES,null=True,blank=True)
+    Preference_Room=models.ForeignKey(RoomCategory,null=True,blank=True)
     photo = models.ImageField(upload_to='profile_pics',blank=True,validators=[validate_image],null=True)
     idPhoto = models.ImageField(upload_to='id_pics',blank=True,validators=[validate_image],null=True)
     #
@@ -268,7 +314,7 @@ class UpcomingOccupant(models.Model):
     roomNo = models.CharField(max_length=255,blank=True,null=True)
     fromStay = models.DateField()
     toStay = models.DateField()
-
+    comments = models.CharField(max_length=255,null=True,blank=True)
     def __str__(self):
         return self.occupantName
 
@@ -277,13 +323,20 @@ class Login(models.Model):
     name = models.CharField(max_length=255,null=False)
     webmail = models.CharField(max_length=255,null=False)
     password = models.CharField(max_length=255,null=False)
-class CaretakerViewAccess(models.Model):
+class ChrViewAccess(models.Model):
     name = models.CharField(max_length=255,null=False)
     webmail = models.CharField(max_length=255,null=False)
 class Log_Table(HostelRoomOccupantRelation):
     class Meta:
         verbose_name = "Log_Table"
         verbose_name_plural = "Log_Table"
+    created = models.DateTimeField(auto_now_add=True)
+
+class Log_Table2(OccupantDetails):
+    class Meta:
+        verbose_name = "Log_Table2"
+        verbose_name_plural = "Log_Table2"
+    created = models.DateTimeField(auto_now_add=True)
 
 class SiangRoom(HostelRoom):
     class Meta:
@@ -445,49 +498,43 @@ class KamengRORelation(HostelRoomOccupantRelation):
 
 # MESS automation
 # default=m2  default=y2
+MONTHS_CHOICES = [(str(i), calendar.month_name[i]) for i in range(1,13)]
+YEARS_CHOICES = [(i,i) for i in range(2010,datetime.now().year+1)]
+curr_month = datetime.now().month
+curr_year = datetime.now().year
+m1 = curr_month
+y1 = curr_year
+m1 = m1 - 1
+m1_y1 = ""
+if m1 < 1:
+    m1 = 12
+    y1 = y1 - 1
+# MESS automation
+# default=m2  default=y2
 class Automation(models.Model):
     class Meta:
         verbose_name = "Automation"
         verbose_name_plural = "Automation"
         unique_together = ('month','year')
 
-    month = models.IntegerField(null=True,blank=True)
-    year = models.IntegerField(null=True,blank=True)
+    month = models.CharField(max_length=9, choices=MONTHS_CHOICES)
+    year = models.IntegerField(choices = YEARS_CHOICES)
 
-    jan_range = models.DateField(null=True,blank=True)
-    january = models.BooleanField(default=False)
+    feed_on_off = models.BooleanField()
+    feed_start_date = models.DateField(null=True,blank=True)
+    feed_off_date = models.DateField(null=True,blank=True)
 
-    feb_range = models.DateField(null=True,blank=True)
-    feburary = models.BooleanField(default=False)
+    pref_on_off = models.BooleanField()
+    pref_start_date = models.DateField(null=True,blank=True)
+    pref_off_date = models.DateField(null=True,blank=True)
 
-    mar_range = models.DateField(null=True,blank=True)
-    march = models.BooleanField(default=False)
-
-    apr_range = models.DateField(null=True,blank=True)
-    april = models.BooleanField(default=False)
-
-    may_range = models.DateField(null=True,blank=True)
-    may = models.BooleanField(default=False)
-
-    jun_range = models.DateField(null=True,blank=True)
-    june = models.BooleanField(default=False)
-
-    july_range = models.DateField(null=True,blank=True)
-    july = models.BooleanField(default=False)
-
-    aug_range = models.DateField(null=True,blank=True)
-    august = models.BooleanField(default=False)
-
-    sept_range = models.DateField(null=True,blank=True)
-    september = models.BooleanField(default=False)
-
-    oct_range = models.DateField(null=True,blank=True)
-    october = models.BooleanField(default=False)
-
-    nov_range = models.DateField(null=True,blank=True)
-    november = models.BooleanField(default=False)
-
-    dec_range = models.DateField(null=True,blank=True)
-    december = models.BooleanField(default=False)
     def __str__(self):
         return '%s_%s' % (self.month, self.year)
+
+# MESS model for csv files import and export
+
+
+class ImportExportFiles(models.Model):
+    hostelName = models.CharField(max_length=255,choices = HOSTEL_CHOICES)
+    month = models.CharField(max_length=9, choices=MONTHS_CHOICES)
+    year = models.IntegerField(choices = YEARS_CHOICES)

@@ -1,92 +1,127 @@
-<div style=text-align:center>
-      <div class="form-group">
-        <div class ="col-sm-offset-2 col-sm-10">
-          <span class="test-danger small"> {{ form.hostelName.errors }} </span>
-        </div>
-        <label class="control-label col-sm-2"> {{ form.hostelName.label_tag }}</label>
-        <div class="col-sm-10"> {{form.hostelName}} </div>
-      </div>
-      <br><hr>
-      <!-- <div class="form-group">
-        <div class ="col-sm-offset-2 col-sm-10">
-          <span class="test-danger small"> {{ form.username.errors }} </span>
-        </div>
-        <label class="control-label col-sm-2"> {{ form.username.label_tag }}</label>
-        <div class="col-sm-10"> {{form.username}} </div>
-      </div>
-      <br><br> -->
-      <div class="form-group">
-        <div class ="col-sm-offset-2 col-sm-10">
-          <span class="test-danger small"> {{ form.cleanliness.errors }} </span>
-        </div>
-        <label class="control-label col-sm-2"> {{ form.cleanliness.label_tag }}</label>
-        <div class="col-sm-10"> {{form.cleanliness}} </div>
-      </div>
-      <br><hr>
-      <div class="form-group">
-        <div class ="col-sm-offset-2 col-sm-10">
-          <span class="test-danger small"> {{ form.qual_b.errors }} </span>
-        </div>
-        <label class="control-label col-sm-2">Breakfast Quality:</label>
-        <div class="col-sm-10"> {{form.qual_b}} </div>
-      </div>
-      <br><hr>
-      <div class="form-group">
-        <div class ="col-sm-offset-2 col-sm-10">
-          <span class="test-danger small"> {{ form.qual_l.errors }} </span>
-        </div>
-        <label class="control-label col-sm-2">Lunch Quality:</label>
-        <div class="col-sm-10"> {{form.qual_l}} </div>
-      </div>
-      <br><hr>
-      <div class="form-group">
-        <div class ="col-sm-offset-2 col-sm-10">
-          <span class="test-danger small"> {{ form.qual_d.errors }} </span>
-        </div>
-        <label class="control-label col-sm-2">Dinner Quality:</label>
-        <div class="col-sm-10"> {{form.qual_d}} </div>
-      </div>
-      <br><hr>
-      <div class="form-group">
-        <div class ="col-sm-offset-2 col-sm-10">
-          <span class="test-danger small"> {{ form.catering.errors }} </span>
-        </div>
-        <label class="control-label col-sm-2"> {{ form.catering.label_tag }}</label>
-        <div class="col-sm-10"> {{form.catering}} </div>
-      </div>
-      <br><hr>
-      <div class="form-group">
-        <div class ="col-sm-offset-2 col-sm-10">
-          <span class="test-danger small"> {{ form.comment.errors }} </span>
-        </div>
-        <label class="control-label col-sm-2"> {{ form.comment.label_tag }}</label>
-        <div class="col-sm-10"> {{form.comment}} </div>
-      </div>
-      <br><hr>
 
-      <div class="form-group">
-        <div class ="col-sm-offset-2 col-sm-10">
-          <span class="test-danger small"> {{ form.document.errors }} </span>
-        </div>
-        <label class="control-label col-sm-2"> {{ form.document.label_tag }}</label>
-        <div class="col-sm-10"> {{form.document}} </div>
-      </div>
-      <br><hr>
-      <div class="form-group">
-        <div class ="col-sm-offset-2 col-sm-10">
-          <span class="test-danger small"> {{ form.description.errors }} </span>
-        </div>
-        <label class="control-label col-sm-2"> {{ form.description.label_tag }}</label>
-        <div class="col-sm-10"> {{form.description}} </div>
-      </div>
-      <br><hr>
-      <div class="form-group">
-        <div class ="col-sm-offset-2 col-sm-10">
-          <span class="test-danger small"> {{ form.uploaded_at.errors }} </span>
-        </div>
-        <label class="control-label col-sm-2"> {{ form.uploaded_at.label_tag }}</label>
-        <div class="col-sm-10"> {{form.uploaded_at}} </div>
-      </div>
-      <hr>
+<!-- <script>
+
+$(function () {
+  var name = '{{form.hostelName.value}}';
+  $("#id_hostelName").val(name).change();
+
+    $("#id_hostelName").ready(function () {
+          $("#id_hostelName").attr("disabled", "disabled");
+    });
+});
+//
+</script> -->
+
+<div class ="row" style=text-align:center >
+              <div class="form-group modal-body col-md-12">
+                
+                                <div class ="col-md-5">
+                                  <label class="control-label col-sm-3"> {{ form.hostelName.label_tag }}</label>
+                                  {{ form.hostelName.as_hidden }}
+                                  <div class="col-sm-2">{{form.hostelName.value}} </div>
+                                </div>
+                                <div class ="col-md-3">
+
+                                  <label class="control-label col-sm-2"> {{ form.month.label_tag }}</label>
+                                  {{ form.month.as_hidden }}
+                                  <div class="col-sm-1">{{form.month.value}} </div>
+                                </div>
+                                 <div class ="col-md-4">
+                                    <label class="control-label col-sm-2"> {{ form.year.label_tag }}</label>
+                                    {{ form.year.as_hidden }}
+                                      <div class="col-sm-2">{{form.year.value}} </div>
+              
+              </div>
+   
+            <br><hr>
+   
+           <div class="md-sm-12">
+                      <div class="form-group" id="input_cleaniness">
+                            <div class ="col-md-2">
+                              <span class="test-danger small"> {{ form.cleanliness.errors }} </span>
+                            </div>
+                            <label class="control-label col-md-2 required"> {{ form.cleanliness.label_tag }}</label>
+                            <div class="col-md-1"> {{form.cleanliness}} </div>
+                      </div>
+
+                     <div class="form-group" id="Catering and Punctuality">
+                            <div class ="col-md-2">
+                              <span class="test-danger small"> {{ form.catering.errors }} </span>
+                            </div>
+                            <label class="control-label col-sm-2 required"> {{ form.catering.label_tag }}</label>
+                            <div class="col-md-2"> {{form.catering}} </div>
+                     </div>
+                 
+            </div>
+      
+         <br><hr>
+        <div class="md-sm-12">
+        
+                <div class =" form-group col-md-4">
+                      <span class="test-danger small"> {{ form.qual_b.errors }} </span>
+                    
+                       <label class="control-label col-md-2 required">Breakfast Quality:</label>
+                      <div class="col-md-1"> {{form.qual_b}} </div>
+
+                </div>
+
+
+              
+               <div class="form-group col-md-4">
+                
+                      <span class="test-danger small"> {{ form.qual_l.errors }} </span>
+                    
+                    <label class="control-label col-sm-2 required">Lunch Quality:</label>
+                    <div class="col-sm-2"> {{form.qual_l}} </div>
+              </div>
+             
+              <div class="form-group col-md-4">
+                  <span class="test-danger small"> {{ form.qual_d.errors }} </span>
+                    <label class="control-label col-sm-2 required">Dinner Quality:</label>
+                    <div class="col-sm-1"> {{form.qual_d}} </div>
+              </div>
+             
+       </div>     
+      <br><br><hr>
+      
+          
+                  <div class="form-group md-sm-12">
+                 
+                          <span class="test-danger small"> {{ form.comment.errors }} </span>
+                        <label class="control-label col-sm-2"> {{ form.comment.label_tag }}</label>
+                        <div class="col-sm-9"> {{form.comment}} </div>
+                  </div>
+
+        <!--
+                 <br><br><br><hr>
+                 <div class="md-sm-12">
+                        <br>
+                          <div class="form-group">    
+                              <span class="test-danger small"> {{ form.document.errors }} </span>
+                            <label class="control-label col-sm-2"> {{ form.document.label_tag }}</label>
+                            <div class="col-sm-2"> {{form.document}} </div>
+                          </div>
+                     
+                          <div class="form-group">
+                            
+                              <span class="test-danger small"> {{ form.description.errors }} </span>
+
+                            <label class="control-label col-sm-3"> {{ form.description.label_tag }} ( about attached Document)</label>
+                            <div class="col-sm-4"> {{form.description}} </div>
+                          </div>
+
+                           <br><hr>
+
+                          <div class="form-group">
+                            
+                              <span class="test-danger small"> {{ form.uploaded_at.errors }} </span>
+
+                            <label class="control-label col-sm-2"> {{ form.uploaded_at.label_tag }}</label>
+                            <div class="col-sm-4"> {{form.uploaded_at}} </div>
+                          </div>
+                </div>
+        -->
+   
+    <hr>
 
 </div>

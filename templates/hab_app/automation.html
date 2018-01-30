@@ -2,343 +2,87 @@
 
 
 {% block body_block %}
-
+{% load my_tags %}
 <!-- <div class="wrapper"> -->
 <!-- /.col (left) -->
+<style>
+#mess {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#mess td, #mess th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#mess tr:nth-child(even){background-color: #f2f2f2;}
+
+#mess tr:hover {background-color: #ddd;}
+
+#mess th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    background-color: #4CAF50;
+    color: white;
+}
+</style>
+
+
+
+
 <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
-  {% csrf_token %}
+{% csrf_token %}
+<table id="mess">
+      <tr>
+        <th>Month</th>
+        <th>Year</th>
+        <th>MESS FEEDBACK(on/off)</th>
+        <th colspan="2"> Feedback</th>
+        <th>MESS PREFERENCE(on/off)</th>
+        <th colspan="2">Preference</th>
+        <th>Edit / Delete</th>
+      </tr>
+      <tr>
+        <th>Value</th>
+        <th>Value</th>
+        <th>(checked/unchecked)</th>
+        <th>START DATE</th>
+        <th>END DATE</th>
+        <th>(checked/unchecked)</th>
+        <th>START DATE</th>
+        <th>END DATE</th>
+        <th> </th>
+      </tr>
 
-    <div class="col-md-3">
-      {% for field in form %}
-          {% if forloop.counter0 < 8 %}
-              {% if forloop.counter0|divisibleby:2 == 0 %}
-              <div class="box box-primary">
-                <div class="box-header">
-                  <!-- <h3 class="box-title">Date picker</h3> -->
-                </div>
-                <div class="box-body">
-                  <!-- Date -->
-                  <div class="form-group">
-                    <label>{{field.label_tag}}</label>
+      {% for obj in objects %}
+        <tr>
+          <td>{{obj.month}}</td>
+          <td>{{obj.year}}</td>
+          <td>{{obj.feed_on_off}}</td>
+          <td>{{obj.feed_start_date}}</td>
+          <td>{{obj.feed_off_date}}</td>
+          <td>{{obj.pref_on_off}}</td>
+          <td>{{obj.pref_start_date}}</td>
+          <td>{{obj.pref_off_date}}</td>
 
-                    <div class="input-group date" >
-                      <div class="input-group-addon">
-                        <i class="fa fa-calendar"></i>
-                      </div>
-                    {{field}}
-
-                    </div>
-                  </div>
-
-
-                </div>
-                <!-- /.box-body -->
-              </div>
-
-              {% else %}
-              <div class="form-group">
-                <label>{{field.label_tag}}</label>
-
-                <div class="input-group date">
-                  <div class="input-group-addon">
-                    <i class="fa fa-calendar"></i>
-                  </div>
-                  {{field}}
-
-                </div>
-              </div>
-
-              {% endif %}
-          {% endif %}
+          <td><a class="btn btn-primary" href="{% url 'hab_app:mess_automation' %}?param2={{obj.month}}_{{obj.year}}" role="button">Edit</a>
+            <a class="btn btn-danger" href="{% url 'hab_app:mess_automation' %}?param3={{obj.month}}_{{obj.year}}" role="button">delete</a></td>
+        </tr>
       {% endfor %}
 
-  </div>
+</table>
+<hr>
 
+    <button type="submit" class="btn btn-info" method="post" name="btn1"> add entry</button>
 
-      <div class="col-md-3">
-        {% for field in form %}
-            {% if forloop.counter0 >= 8 and forloop.counter0 < 16 %}
-                {% if forloop.counter0|divisibleby:2 == 0 %}
-                <div class="box box-primary">
-                  <div class="box-header">
-                    <!-- <h3 class="box-title">Date picker</h3> -->
-                  </div>
-                  <div class="box-body">
-                    <!-- Date -->
-                    <div class="form-group">
-                      <label>{{field.label_tag}}</label>
-
-                      <div class="input-group date">
-                        <div class="input-group-addon">
-                          <i class="fa fa-calendar"></i>
-                        </div>
-                        {{field}}
-
-                      </div>
-                    </div>
-
-
-                  </div>
-                  <!-- /.box-body -->
-                </div>
-
-                {% else %}
-                <div class="form-group">
-                  <label>{{field.label_tag}}</label>
-
-                  <div class="input-group date">
-                    <div class="input-group-addon">
-                      <i class="fa fa-calendar"></i>
-                    </div>
-                    {{field}}
-
-                  </div>
-                </div>
-
-                {% endif %}
-            {% endif %}
-        {% endfor %}
-
-    </div>
-
-        <div class="col-md-3">
-          {% for field in form %}
-              {% if forloop.counter0 >= 8 and forloop.counter0 >= 16 %}
-                  {% if forloop.counter0|divisibleby:2 == 0 %}
-                  <div class="box box-primary">
-                    <div class="box-header">
-                      <!-- <h3 class="box-title">Date picker</h3> -->
-                    </div>
-                    <div class="box-body">
-                      <!-- Date -->
-                      <div class="form-group">
-                        <label>{{field.label_tag}}</label>
-
-                        <div class="input-group date">
-                          <div class="input-group-addon">
-                            <i class="fa fa-calendar"></i>
-                          </div>
-                          {{field}}
-
-                        </div>
-                      </div>
-
-
-                    </div>
-                    <!-- /.box-body -->
-                  </div>
-
-                  {% else %}
-                  <div class="form-group">
-                    <label>{{field.label_tag}}</label>
-
-                    <div class="input-group date">
-                      <div class="input-group-addon">
-                        <i class="fa fa-calendar"></i>
-                      </div>
-                      {{field}}
-
-                    </div>
-                  </div>
-
-                  {% endif %}
-              {% endif %}
-          {% endfor %}
-
-      </div>
-  <!-- /.row -->
-<div class="col-md-3">
-  <div class="box box-success">
-    <div class="box-header">
-      <h1>CONTROL PANEL</h1>
-    </div>
-    <br><br><br>
-  </div>
-  <div class="box-body">
-    <button type="submit" class="btn btn-success" name="btn1">Submit</button>
-    <hr>
-    EXPORT MESS-FEEDBACKS AS CSV :
-    <br>
-    <a href="messfeedback_export_csv" class="btn btn-info" role="button">Export as .csv</a>
-    <br><br>
-    EXPORT MESS-FEEDBACKS AS XLS :
-    <br>
-    <a href="messfeedback_export_xls" class="btn btn-info" role="button">Export as .xls</a>
-
-    <hr>
-    EXPORT MESS-PREFERENCE AS CSV :
-    <br>
-    <a href="preference_export_csv" class="btn btn-info" role="button">Export as .csv</a>
-    <br><br>
-    EXPORT MESS-PREFERENCE AS XLS :
-    <br>
-    <a href="preference_export_xls" class="btn btn-info" role="button">Export as .xls</a>
-
-    <hr>
-    IMPORT FINAL MESS-PREFERENCE AS CSV :
-    <br>
-    <input type="file" name="myfile">
-    <button type="submit" class="btn btn-info" name="btn2">Upload csv</button>
-
-  </div>
-
-</div>
 </form>
 
-<script type="text/javascript">
-
-//   $("#xyz").on('click', function foo() {
-//     // setInterval(foo, 1000);
-//     if( this.checked ){
-//         // yesh here
-//         $( "#id_jan_range" ).prop("readonly", true);
-//     }
-//     else{
-//       $( "#id_jan_range" ).prop("readonly", false);
-//       $("#id_jan_range").daterangepicker({ dateFormat: 'yy-mm-dd' });
-//     }
-// });
-// $('#xyz').click(function foo() {
-//   if (!$(this).is(':checked')) {
-//     $( "#id_jan_range" ).prop("readonly", true);
-//   }
-//   else{
-//
-//     $("#id_jan_range").daterangepicker({ dateFormat: 'yy-mm-dd' });
-//   }
-// });
-
-// var $input = $('#xyz');
-//
-// $('#xyz').on('change', function() {
-// 	var disabled = $(this).val() !== 'True';
-// 	$input.prop('disabled', disabled);
-// });
-// setInterval(foo, 1000);
 
 
 
-$(function () {
-    $("#id_january").click(function () {
-        if ($(this).is(":checked")) {
-          $("#id_jan_range").attr("disabled", "disabled");
-            // $("#id_jan_range").focus();
-        } else {
-            $("#id_jan_range").removeAttr("disabled");
-        }
-    });
-});
-$(function () {
-    $("#id_feburary").click(function () {
-        if ($(this).is(":checked")) {
-          $("#id_feb_range").attr("disabled", "disabled");
-            // $("#id_jan_range").focus();
-        } else {
-            $("#id_feb_range").removeAttr("disabled");
-        }
-    });
-});
-$(function () {
-    $("#id_march").click(function () {
-        if ($(this).is(":checked")) {
-          $("#id_mar_range").attr("disabled", "disabled");
-            // $("#id_jan_range").focus();
-        } else {
-            $("#id_mar_range").removeAttr("disabled");
-        }
-    });
-});
-$(function () {
-    $("#id_april").click(function () {
-        if ($(this).is(":checked")) {
-          $("#id_apr_range").attr("disabled", "disabled");
-            // $("#id_jan_range").focus();
-        } else {
-            $("#id_apr_range").removeAttr("disabled");
-        }
-    });
-});
-$(function () {
-    $("#id_may").click(function () {
-        if ($(this).is(":checked")) {
-          $("#id_may_range").attr("disabled", "disabled");
-            // $("#id_jan_range").focus();
-        } else {
-            $("#id_may_range").removeAttr("disabled");
-        }
-    });
-});
-$(function () {
-    $("#id_june").click(function () {
-        if ($(this).is(":checked")) {
-          $("#id_jun_range").attr("disabled", "disabled");
-            // $("#id_jan_range").focus();
-        } else {
-            $("#id_jun_range").removeAttr("disabled");
-        }
-    });
-});
-$(function () {
-    $("#id_july").click(function () {
-        if ($(this).is(":checked")) {
-          $("#id_july_range").attr("disabled", "disabled");
-            // $("#id_jan_range").focus();
-        } else {
-            $("#id_july_range").removeAttr("disabled");
-        }
-    });
-});
-$(function () {
-    $("#id_august").click(function () {
-        if ($(this).is(":checked")) {
-          $("#id_aug_range").attr("disabled", "disabled");
-            // $("#id_jan_range").focus();
-        } else {
-            $("#id_aug_range").removeAttr("disabled");
-        }
-    });
-});
-$(function () {
-    $("#id_september").click(function () {
-        if ($(this).is(":checked")) {
-          $("#id_sept_range").attr("disabled", "disabled");
-            // $("#id_jan_range").focus();
-        } else {
-            $("#id_sept_range").removeAttr("disabled");
-        }
-    });
-});
-$(function () {
-    $("#id_october").click(function () {
-        if ($(this).is(":checked")) {
-          $("#id_oct_range").attr("disabled", "disabled");
-            // $("#id_jan_range").focus();
-        } else {
-            $("#id_oct_range").removeAttr("disabled");
-        }
-    });
-});
-$(function () {
-    $("#id_november").click(function () {
-        if ($(this).is(":checked")) {
-          $("#id_nov_range").attr("disabled", "disabled");
-            // $("#id_jan_range").focus();
-        } else {
-            $("#id_nov_range").removeAttr("disabled");
-        }
-    });
-});
-$(function () {
-    $("#id_december").click(function () {
-        if ($(this).is(":checked")) {
-          $("#id_dec_range").attr("disabled", "disabled");
-            // $("#id_jan_range").focus();
-        } else {
-            $("#id_dec_range").removeAttr("disabled");
-        }
-    });
-});
 
-</script>
 
 {% endblock %}

@@ -37,7 +37,9 @@
   <!-- Google Font -->
   <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-
+        <style type="text/css">
+            label.required:after { content: '*';color:red; }
+        </style>
 </head>
 <body class="hold-transition  skin-blue sidebar-mini">
   {# <div id="main_header"><img class="margin" src='images/mainLogo.png'><h1>Indian Institute of Technology Guwahati</h1></div>#}
@@ -103,10 +105,25 @@
       <ul class="sidebar-menu" data-widget="tree" id="xyz">
         <li class="header">HEADER</li>
         <!-- Optionally, you can add icons to the links -->
-        <li ><a  href="{% url 'home' %}"> <span>Home</span></a></li>
-        <li ><a  href="{% url 'hab_app:vacate' %}"> <span>Rooms to be vacated</span></a></li>
+        <li ><a  href="{% url 'home' %}"><span>Home</span></a></li>
+        <li class=" treeview">
+          <a href="#">
+            <span>Rooms to be vacated</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a  href="{% url 'hab_app:vacate' %}?param=1">Within 5 Days</a></li>
+            <li><a href="{% url 'hab_app:vacate' %}?param=2">All Rooms</a></li>
+          </ul>
+        </li>
         <li><a href="{% url 'hab_app:allot' %}"> <span>Rooms to be alloted</span></a></li>
         <li><a href="{% url 'hab_app:existingOccupants' %}"> <span>Existing Occupants</span></a></li>
+        <li><a href="{% url 'hab_app:caretakerapproveinfo' %}"> <span>Approve student information</span></a></li>
+        {% if permission %}
+        <li><a href="{% url 'hab_app:ct_add_occupant' %}"> <span>Add Occupant</span></a></li>
+        {% endif %}
         <li class=" treeview">
           <a href="#">
             <span>Room Details</span>
@@ -218,9 +235,6 @@
     })
   })
 </script>
-
-
-
 
 </body>
 </html>

@@ -8,7 +8,7 @@
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   {# datetime#}
-<link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/themes/redmond/jquery-ui.css" rel="Stylesheet" />
+  <link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/themes/redmond/jquery-ui.css" rel="Stylesheet" />
 <script language="javascript" type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/jquery-ui.min.js"></script>
   <!-- Bootstrap 3.3.7 -->
@@ -47,23 +47,6 @@
 
 <!--  static files for MODAL start-->
 
-<meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 2 | Modals</title>
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <!-- Bootstrap 3.3.7 -->
-  <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.min.css' %}">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="{% static 'bower_components/font-awesome/css/font-awesome.min.css' %}">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="{% static 'bower_components/Ionicons/css/ionicons.min.css' %}">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="{% static 'dist/css/AdminLTE.min.css' %}">
-  <!-- AdminLTE Skins. Choose a skin from the css/skins
-       folder instead of downloading all of them to reduce the load. -->
-  <link rel="stylesheet" href="{% static 'dist/css/skins/_all-skins.min.css' %}">
-
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
   <style>
     .example-modal .modal {
@@ -80,7 +63,9 @@
       background: transparent !important;
     }
   </style>
-
+  <style type="text/css">
+      label.required:after { content: '*';color:red; }
+  </style>
 <!--  static files for MODAL end-->
 
 
@@ -156,6 +141,7 @@
         <!-- Optionally, you can add icons to the links -->
         <li ><a href="{% url 'home' %}"> <span>Home</span></a></li>
          <li><a href="{% url 'updateinfo' %}">Update Information</a></li>
+         <li><a href="{% url 'track' %}">Track Requests</a></li>
         <!-- <li ><a href="{% url 'hab_app:chrApproveApplication' %}"> <span>Approve Applications</span></a></li>
         <li ><a href="{% url 'hab_app:chrHostelSummary' %}"> <span>Hostel Summary</span></a></li> -->
         <li class=" treeview">
@@ -168,8 +154,8 @@
         <ul class="treeview-menu">
           <li><a href="{% url 'feedback' %}">Mess Feedback</a></li>
           <li><a href="{% url 'preference' %}">Mess Preference</a></li>
-          <li><a href="{% url 'home' %}">Mess Leave</a></li>
-        </ul>
+<!--           <li><a href="{% url 'home' %}">Mess Leave</a></li>
+ -->        </ul>
       </li>
       </ul>
       <!-- /.sidebar-menu -->
@@ -240,17 +226,20 @@
 
 <!--  script files for MODAL start-->
 <!-- jQuery 3 -->
-<script src="{% static 'bower_components/jquery/dist/jquery.min.js' %}"></script>
-<!-- Bootstrap 3.3.7 -->
-<script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.min.js' %}"></script>
-<!-- FastClick -->
-<script src="{% static 'bower_components/fastclick/lib/fastclick.js' %}"></script>
-<!-- AdminLTE App -->
-<script src="{% static 'dist/js/adminlte.min.js' %}"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="{% static 'dist/js/demo.js' %}"></script>
+
 <!--  script files for MODAL end-->
-
-
+<script>
+  $(function () {
+    $('#example1').DataTable()
+    $('#example2').DataTable({
+      'paging'      : true,
+      'lengthChange': false,
+      'searching'   : true,
+      'ordering'    : true,
+      'info'        : true,
+      'autoWidth'   : false,
+    })
+  })
+</script>
 </body>
 </html>

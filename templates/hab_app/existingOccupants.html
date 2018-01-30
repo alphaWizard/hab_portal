@@ -11,6 +11,9 @@
           <th>Webmail Id</th>
           <th>Contact</th>
           <th>Details</th>
+          {% if permission %}
+          <th>Edit Details</th>
+          {% endif %}
       </tr>
   </thead>
 
@@ -25,6 +28,9 @@
           <td>{{ j.webmail}}</td>
           <td>{{j.mobNo}}</td>
           <td><a href="{% url 'hab_app:showDetails' %}?param={{ i.occupantId }}" onclick="showDetail(this)" id = "{{ i.occupantId }}">Details</a></td>
+          {% if permission %}
+          <th><a class = "btn btn-primary btn-sm"href="{% url 'hab_app:editOccupantDetails' %}?param={{ i.occupantId }}" onclick="showDetail(this)" id = "{{ i.occupantId }}">Edit Details</a></th>
+          {% endif %}
       </tr>
       {% endfor %}
   </tbody>

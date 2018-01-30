@@ -1,0 +1,126 @@
+{%extends 'student_portal/base.html'%}
+
+{# load static #}
+{%block body_block%}
+<br>
+<h2>
+  {% if False %}
+  <script>
+  jQuery(function(){
+     jQuery('#infoButton').click();
+  });
+  </script>
+
+  <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-info" id="infoButton" hidden="hidden">
+                Launch Info Modal
+              </button>
+
+              <div class="modal modal-info fade" id="modal-info">
+         <div class="modal-dialog">
+           <div class="modal-content">
+             <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                 <span aria-hidden="true">&times;</span></button>
+               <h4 class="modal-title">Page not active</h4>
+             </div>
+             <div class="modal-body">
+               <p>This page will be active only on certain dates of a month </p>
+             </div>
+             <div class="modal-footer">
+               <button type="button" class="btn btn-outline pull-right" data-dismiss="modal">Close</button>
+
+             </div>
+           </div>
+           <!-- /.modal-content -->
+         </div>
+         <!-- /.modal-dialog -->
+       </div>
+       <!-- /.modal -->
+
+
+{% else %}
+  <div style="margin-left:20%;">
+{% if messages %}
+<ul class="messages">
+{% for message in messages %}
+
+  <button style="margin-left:20%;" align="center" class="btn btn-success" class="{{ message.tags }}">{{ message }} </button>
+{% endfor %}
+</ul>
+<br> <br>
+{% endif %}
+
+</div>
+
+
+
+
+<div style="text-align:center">
+    <script>
+      n =  new Date();
+      y = n.getFullYear();
+      m = n.getMonth();
+      m = m-1;
+      if (m<0){
+        m=11;
+        y=y-1;
+      }
+      var monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+      ];
+
+        document.write("Mess Feedback Form for " + monthNames[m] + " " + y);
+
+    </script>
+</div>
+
+</h2>
+<div class="panel panel-default">
+  <div class="panel-body">
+    <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <!-- <div class="form-group">
+        <div class ="col-sm-offset-2 col-sm-10">
+          <span class="test-danger small"> {{ form.hostelName.errors }} </span>
+        </div>
+        <label class="control-label col-sm-2"> {{ form.hostelName.label_tag }}</label>
+        {{ form.hostelName.as_hidden }}
+        <div class="col-sm-10">{{form.hostelName.value}} </div>
+      </div>
+      <br><hr> -->
+        <div style=text-align:center>
+            <div class="form-group">
+              <div class ="col-sm-offset-2 col-sm-10">
+                <span class="test-danger small"> {{ form.raw_materials_quality.errors }} </span>
+              </div>
+              <label class="control-label col-sm-2"> {{ form.raw_materials_quality.label_tag }}</label>
+              <div class="col-sm-10"> {{form.raw_materials_quality}} </div>
+            </div>
+            <br><hr>
+
+            <br><br>
+            <div class="form-group" style=text-align:center>
+              <div class="col-sm-offset-2 col-sm-10">
+
+               <button type="submit" class="btn btn-success"> Submit </button>
+
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+
+<!-- <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Upload</button>
+  </form>
+
+  <p><a href="{% url 'home' %}">Return to home</a></p> -->
+
+{% endif %}
+{%endblock%}

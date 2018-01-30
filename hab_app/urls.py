@@ -27,13 +27,21 @@ urlpatterns = [
     url(r'^chrHostelSummary/$', views.chrHostelSummary,name='chrHostelSummary'),
     url(r'^chrCaretakerView/$', views.chrCaretakerView,name='chrCaretakerView'),
     url(r'^chrFreshersBulkAllot/$',views.chrFreshersBulkAllot, name='chrFreshersBulkAllot'),
+    url(r'^caretakerapproveinfo/$', views.caretakerapproveinfo,name='caretakerapproveinfo'),
+    url(r'^ct_add_occupant/$', views.ct_add_occupant,name='ct_add_occupant'),
+    url(r'^chrViewSpecialRooms/$', views.chrViewSpecialRooms,name='chrViewSpecialRooms'),
+    url(r'^editRODetails/$', views.editRODetails,name='editRODetails'),
+    url(r'^editOccupantDetails/$', views.editOccupantDetails,name='editOccupantDetails'),
+    url(r'^chrRoomDetailsEdit/$', views.chrRoomDetailsEdit,name='chrRoomDetailsEdit'),
+    url(r'^chrRoomDetailsEdit2/(?P<hostel_name>[a-zA-Z0-9_]+)$', views.chrRoomDetailsEdit2 , name='chrRoomDetailsEdit2'),
+    url(r'^chrRoomAdd/(?P<hostel_name>[a-zA-Z0-9_]+)$', views.chrRoomAdd,name='chrRoomAdd'),
+    url(r'^chrRoomDelete/(?P<hostel_name>[a-zA-Z0-9_]+)$', views.chrRoomDelete , name='chrRoomDelete'),
 
-    
+
+
     url(r'^mess_opi/$', views.mess_opi,name='mess_opi'),
     url(r'^mess_opi/calculate$', views.opi_calculate,name='opi_calculate'),
     url(r'^mess_automation/$', views.mess_automation,name='mess_automation'),
-    url(r'^mess_automation/messfeedback_export_csv/$', views.export_feedback_as_csv,name='export_feedback_as_csv'),
-    url(r'^mess_automation/messfeedback_export_xls/$', views.export_feedback_as_xls,name='export_feedback_as_xls'),
-    url(r'^mess_automation/preference_export_csv/$', views.export_preference_as_csv,name='export_preference_as_csv'),
-    url(r'^mess_automation/preference_export_xls/$', views.export_preference_as_xls,name='export_preference_as_xls'),
+    url(r'^mess_import_export_files/$',views.import_export_files,name='mess_import_export'),
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_DIR)
+urlpatterns+=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

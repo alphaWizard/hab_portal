@@ -1,7 +1,12 @@
+
 from django.db import models
 from datetime import datetime
 from decimal import Decimal
 from django.contrib.auth.models import User
+
+
+
+
 curr_month = datetime.now().month
 curr_year = datetime.now().year
 m1 = curr_month
@@ -63,16 +68,16 @@ class MessFeedback(models.Model):
     filled = models.BooleanField(default=False)
     month = models.IntegerField(default=m1)
     year = models.IntegerField(default=y1)
-    month_year = models.CharField(max_length=255,default=m1_y1)
-    comment = models.TextField()
+    # month_year = models.CharField(max_length=255,default=m1_y1)
+    comment = models.TextField(blank=True, null=True)
     description = models.CharField(max_length=255, blank=True)
-    document = models.FileField(upload_to='documents/')
+    document = models.FileField(upload_to='documents/',blank=True, null=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name = "MessFeedback"
         verbose_name_plural = "MessFeedback"
-        unique_together = ('username','month_year')
+        unique_together = ('username','month','year')
 #add month, year (as pk along with username)
 #add further comments field
     def __str__(self):
@@ -90,14 +95,14 @@ class Preference(models.Model):
     username = models.CharField(max_length=255,primary_key=True)
     month = models.IntegerField(default=m2)
     year = models.IntegerField(default=y2)
-    month_year = models.CharField(max_length=255,default=m2_y2)
+    #month_year = models.CharField(max_length=255,default=m2_y2)
     h1 = models.CharField(max_length=255,choices = HOSTEL_CHOICES)
     h2 = models.CharField(max_length=255,choices = HOSTEL_CHOICES)
     h3 = models.CharField(max_length=255,choices = HOSTEL_CHOICES)
     class Meta:
         verbose_name = "Preferences"
         verbose_name_plural = "Preferences"
-        unique_together = ('username','month_year')
+        unique_together = ('username','month','year')
 
 class FinalPreference(models.Model):
     hostelName = models.CharField(max_length=255,choices = HOSTEL_CHOICES)
@@ -108,6 +113,7 @@ class FinalPreference(models.Model):
     class Meta:
         verbose_name = "FinalPreference"
         verbose_name_plural = "FinalPreference"
+        unique_together = ('username','month','year')
 
 
 
@@ -117,14 +123,21 @@ class Opi_calculated(models.Model):
     numberOfSubscriptions = models.IntegerField() #actually no of feedback
     month = models.IntegerField(default=m1)
     year = models.IntegerField(default=y1)
-    month_year = models.CharField(max_length=255,default=m1_y1)
+    # month_year = models.CharField(max_length=255,default=m1_y1)
+    cleanliness_av = models.DecimalField(max_digits=20,decimal_places=2,default=0)
+    breakfast_quality_av = models.DecimalField(max_digits=20,decimal_places=2,default=0)
+    lunch_quality_av = models.DecimalField(max_digits=20,decimal_places=2,default=0)
+    dinner_quality_av = models.DecimalField(max_digits=20,decimal_places=2,default=0)
+    catering_av = models.DecimalField(max_digits=20,decimal_places=2,default=0)
+    raw_materials_quality = models.IntegerField(choices = FEEDBACK_CHOICES,null=True)
 
     class Meta:
         verbose_name = "Opi_calculated"
         verbose_name_plural = "Opi_calculated"
-        unique_together = ('hostelName','month_year')
+        unique_together = ('hostelName','month','year')
     def __str__(self):
         return '%s_%s_%s' % (self.hostelName, self.month, self.year)
+
 
 
 # createcachetable if db is renewed
